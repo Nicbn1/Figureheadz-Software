@@ -1,7 +1,8 @@
+import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { Route, Switch, Router as WouterRouter } from 'wouter';
+import { Route, Switch, Router as WouterRouter, useLocation, useSearch } from 'wouter';
 import { AppLayout } from '@/components/layout/AppLayout';
 import NotFound from '@/pages/not-found';
 
@@ -26,9 +27,21 @@ const queryClient = new QueryClient({
   },
 });
 
+function ScrollToTop() {
+  const [pathname] = useLocation();
+  const search = useSearch();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname, search]);
+
+  return null;
+}
+
 function Router() {
   return (
     <AppLayout>
+      <ScrollToTop />
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/shop" component={Shop} />

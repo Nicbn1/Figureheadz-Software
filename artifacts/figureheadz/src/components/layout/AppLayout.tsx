@@ -27,7 +27,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </p>
             <div className="flex justify-center gap-4">
               <a
-                href="https://facebook.com/Figureheadz"
+                href="https://www.facebook.com/Figureheadzpops"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Figureheadz on Facebook"

@@ -1,1 +1,2 @@
 - [Orval + Zod v3 codegen pitfalls](orval-zod-codegen-pitfalls.md) — `format: email` breaks typecheck; `<OperationIdPascal>Response`/`Body`-shaped schema names collide with generated exports.
+- [Resend domain verification](resend-domain-verification.md) — Resend test-mode connections 403 on sending to any address but the account owner's until a domain is verified.

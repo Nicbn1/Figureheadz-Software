@@ -1,6 +1,7 @@
 import { Link, useLocation, useSearch } from "wouter";
 import { useCart } from "@/lib/cart";
 import { ShoppingCart, Search, User } from "lucide-react";
+import { Show } from "@clerk/react";
 import logoUrl from "@/assets/figureheadz-logo.jpeg";
 
 export function Header() {
@@ -59,9 +60,16 @@ export function Header() {
           <Link href="/shop" className="p-2 bg-white comic-border shadow-[2px_2px_0_#000] hover:shadow-[4px_4px_0_#000] hover:-translate-y-1 transition-all rounded-full text-black">
             <Search className="h-5 w-5" />
           </Link>
-          <Link href="/orders" className="p-2 bg-white comic-border shadow-[2px_2px_0_#000] hover:shadow-[4px_4px_0_#000] hover:-translate-y-1 transition-all rounded-full text-black">
-            <User className="h-5 w-5" />
-          </Link>
+          <Show when="signed-in">
+            <Link href="/account" className="p-2 bg-white comic-border shadow-[2px_2px_0_#000] hover:shadow-[4px_4px_0_#000] hover:-translate-y-1 transition-all rounded-full text-black">
+              <User className="h-5 w-5" />
+            </Link>
+          </Show>
+          <Show when="signed-out">
+            <Link href="/sign-in" className="p-2 bg-white comic-border shadow-[2px_2px_0_#000] hover:shadow-[4px_4px_0_#000] hover:-translate-y-1 transition-all rounded-full text-black">
+              <User className="h-5 w-5" />
+            </Link>
+          </Show>
           <Link href="/cart" className="p-2 bg-secondary comic-border shadow-[2px_2px_0_#000] hover:shadow-[4px_4px_0_#000] hover:-translate-y-1 transition-all rounded-full text-black relative flex items-center justify-center">
             <ShoppingCart className="h-5 w-5" />
             {itemCount > 0 && (

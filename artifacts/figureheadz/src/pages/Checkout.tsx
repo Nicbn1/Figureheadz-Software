@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useUser, Show } from "@clerk/react";
 import { useCart, useCartId } from "@/lib/cart";
 import { useCreateOrder } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,9 @@ export default function Checkout() {
   const createOrder = useCreateOrder();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { user, isSignedIn, isLoaded: userLoaded } = useUser();
+  const [checkingOutAsGuest, setCheckingOutAsGuest] = useState(false);
+  const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 
   const form = useForm<CheckoutValues>({
     resolver: zodResolver(checkoutSchema),
@@ -45,6 +49,16 @@ export default function Checkout() {
       country: "",
     }
   });
+
+  // Prefill the email field once we know the signed-in user's address
+  useEffect(() => {
+    const email = user?.primaryEmailAddress?.emailAddress;
+    if (email) {
+      form.setValue("email", email);
+    }
+  }, [user, form]);
+
+  const readyToShowForm = !userLoaded || isSignedIn || checkingOutAsGuest;
 
   const onSubmit = async (values: CheckoutValues) => {
     if (!cartId) return;
@@ -103,8 +117,40 @@ export default function Checkout() {
       <div className="flex flex-col lg:flex-row gap-12">
         {/* Form */}
         <div className="flex-1 bg-white p-8 comic-border shadow-[8px_8px_0_#000]">
+          {!readyToShowForm ? (
+            <div>
+              <h2 className="font-display text-3xl uppercase mb-6 border-b-4 border-black pb-4">Sign In To Check Out</h2>
+              <p className="text-lg font-medium mb-6">
+                Sign in for faster checkout and easy order tracking, or continue without an account.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button asChild size="lg" className="flex-1">
+                  <Link href={`/sign-in?redirect=${encodeURIComponent(`${basePath}/checkout`)}`}>Sign In</Link>
+                </Button>
+                <Button
+                  type="button"
+                  size="lg"
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setCheckingOutAsGuest(true)}
+                >
+                  Continue As Guest
+                </Button>
+              </div>
+              <p className="text-sm text-muted-foreground mt-6">
+                New here? <Link href={`/sign-up?redirect=${encodeURIComponent(`${basePath}/checkout`)}`} className="underline font-bold">Create an account</Link> instead.
+              </p>
+            </div>
+          ) : (
+          <>
           <h2 className="font-display text-3xl uppercase mb-6 border-b-4 border-black pb-4">Shipping Details</h2>
-          
+
+          <Show when="signed-in">
+            <p className="text-sm font-bold uppercase text-muted-foreground mb-4 -mt-2">
+              Signed in as {user?.primaryEmailAddress?.emailAddress}
+            </p>
+          </Show>
+
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               
@@ -241,6 +287,8 @@ export default function Checkout() {
               </Button>
             </form>
           </Form>
+          </>
+          )}
         </div>
 
         {/* Order Summary */}

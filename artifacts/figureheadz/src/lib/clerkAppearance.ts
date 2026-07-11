@@ -1,0 +1,52 @@
+import { shadcn } from '@clerk/themes';
+
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+export const clerkAppearance = {
+  theme: shadcn,
+  cssLayerName: 'clerk',
+  options: {
+    logoPlacement: 'inside' as const,
+    logoLinkUrl: basePath || '/',
+    logoImageUrl: `${window.location.origin}${basePath}/logo.svg`,
+  },
+  variables: {
+    colorPrimary: 'hsl(213 100% 50%)',
+    colorForeground: '#000000',
+    colorMutedForeground: '#555555',
+    colorDanger: 'hsl(0 100% 50%)',
+    colorBackground: '#ffffff',
+    colorInput: '#ffffff',
+    colorInputForeground: '#000000',
+    colorNeutral: '#000000',
+    fontFamily: "'Space Grotesk', sans-serif",
+    borderRadius: '0px',
+  },
+  elements: {
+    rootBox: 'w-full flex justify-center',
+    cardBox: 'bg-white border-4 border-black shadow-[8px_8px_0_#000] w-[440px] max-w-full overflow-hidden',
+    card: '!shadow-none !border-0 !bg-transparent !rounded-none',
+    footer: '!shadow-none !border-0 !bg-transparent !rounded-none',
+    headerTitle: 'font-display text-4xl uppercase text-black',
+    headerSubtitle: 'text-black/70 font-medium',
+    socialButtonsBlockButtonText: 'text-black font-bold',
+    socialButtonsBlockButton: 'border-2 border-black hover:bg-muted',
+    formFieldLabel: 'text-black font-bold uppercase text-xs tracking-wide',
+    formFieldInput: 'border-2 border-black focus:border-primary',
+    formButtonPrimary: 'bg-secondary text-black border-2 border-black font-display text-lg uppercase shadow-[3px_3px_0_#000] hover:shadow-[5px_5px_0_#000] hover:-translate-y-0.5 transition-all',
+    footerActionLink: 'text-primary font-bold underline',
+    footerActionText: 'text-black/70',
+    footerAction: 'text-center',
+    dividerText: 'text-black/50 font-medium',
+    dividerLine: 'bg-black/20',
+    identityPreviewEditButton: 'text-primary',
+    formFieldSuccessText: 'text-green-700',
+    alertText: 'text-black',
+    alert: 'border-2 border-destructive bg-destructive/10',
+    otpCodeFieldInput: 'border-2 border-black',
+    formFieldRow: '',
+    main: '',
+    logoBox: 'mb-2',
+    logoImage: 'h-16 w-16',
+  },
+};

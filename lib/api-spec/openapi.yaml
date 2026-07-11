@@ -3,13 +3,21 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Figureheadz collectibles storefront API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: catalog
+    description: Product catalog browsing
+  - name: cart
+    description: Shopping cart operations
+  - name: orders
+    description: Checkout and order history
+  - name: admin
+    description: Admin panel operations
 paths:
   /healthz:
     get:
@@ -24,7 +32,381 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /categories:
+    get:
+      operationId: listCategories
+      tags: [catalog]
+      summary: List categories
+      responses:
+        "200":
+          description: Categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+
+  /franchises:
+    get:
+      operationId: listFranchises
+      tags: [catalog]
+      summary: List distinct franchises/brands for filtering
+      responses:
+        "200":
+          description: Franchise names
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+  /products:
+    get:
+      operationId: listProducts
+      tags: [catalog]
+      summary: List products with filters and sort
+      parameters:
+        - name: categorySlug
+          in: query
+          schema: { type: string }
+        - name: franchise
+          in: query
+          schema: { type: string }
+        - name: minPriceCents
+          in: query
+          schema: { type: integer }
+        - name: maxPriceCents
+          in: query
+          schema: { type: integer }
+        - name: inStockOnly
+          in: query
+          schema: { type: boolean }
+        - name: search
+          in: query
+          schema: { type: string }
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [newest, price_asc, price_desc, popularity]
+        - name: limit
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+
+  /products/featured:
+    get:
+      operationId: listFeaturedProducts
+      tags: [catalog]
+      summary: Featured / new arrival products for the home page
+      responses:
+        "200":
+          description: Featured products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+
+  /products/{slug}:
+    get:
+      operationId: getProduct
+      tags: [catalog]
+      summary: Get a single product by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Not found
+
+  /products/{slug}/related:
+    get:
+      operationId: listRelatedProducts
+      tags: [catalog]
+      summary: Related items for a product (same category/franchise)
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Related products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+
+  /cart:
+    post:
+      operationId: createCart
+      tags: [cart]
+      summary: Create a new empty cart
+      responses:
+        "201":
+          description: Created cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+
+  /cart/{cartId}:
+    get:
+      operationId: getCart
+      tags: [cart]
+      summary: Get a cart by id
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "404":
+          description: Not found
+
+  /cart/{cartId}/items:
+    post:
+      operationId: addCartItem
+      tags: [cart]
+      summary: Add an item (product variation) to the cart
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CartItemInput"
+      responses:
+        "200":
+          description: Updated cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "400":
+          description: Invalid request (e.g. out of stock)
+
+  /cart/{cartId}/items/{itemId}:
+    patch:
+      operationId: updateCartItem
+      tags: [cart]
+      summary: Update quantity of a cart item
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema: { type: string }
+        - name: itemId
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CartItemUpdate"
+      responses:
+        "200":
+          description: Updated cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "404":
+          description: Not found
+    delete:
+      operationId: removeCartItem
+      tags: [cart]
+      summary: Remove an item from the cart
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema: { type: string }
+        - name: itemId
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Updated cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "404":
+          description: Not found
+
+  /orders:
+    post:
+      operationId: createOrder
+      tags: [orders]
+      summary: Checkout — create an order from a cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderInput"
+      responses:
+        "201":
+          description: Created order
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        "400":
+          description: Invalid request (e.g. empty cart, out of stock)
+    get:
+      operationId: listOrdersByEmail
+      tags: [orders]
+      summary: Look up order history by guest email
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Orders for the given email
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+
+  /orders/{id}:
+    get:
+      operationId: getOrder
+      tags: [orders]
+      summary: Get a single order (order confirmation page)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Order
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        "404":
+          description: Not found
+
+  /admin/login:
+    post:
+      operationId: adminLogin
+      tags: [admin]
+      summary: Admin panel login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminCredentials"
+      responses:
+        "200":
+          description: Login success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminSession"
+        "401":
+          description: Invalid password
+
+  /admin/sync-status:
+    get:
+      operationId: getSyncStatus
+      tags: [admin]
+      summary: Get catalog sync status (last synced time, mode, item count)
+      security:
+        - adminToken: []
+      responses:
+        "200":
+          description: Sync status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncStatus"
+        "401":
+          description: Unauthorized
+
+  /admin/sync:
+    post:
+      operationId: triggerSync
+      tags: [admin]
+      summary: Manually trigger a catalog/inventory sync ("Sync Now")
+      security:
+        - adminToken: []
+      responses:
+        "200":
+          description: Sync result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncStatus"
+        "401":
+          description: Unauthorized
+
+  /admin/sales-summary:
+    get:
+      operationId: getSalesSummary
+      tags: [admin]
+      summary: Basic sales snapshot for the admin panel
+      security:
+        - adminToken: []
+      responses:
+        "200":
+          description: Sales summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SalesSummary"
+        "401":
+          description: Unauthorized
+
 components:
+  securitySchemes:
+    adminToken:
+      type: http
+      scheme: bearer
   schemas:
     HealthStatus:
       type: object
@@ -34,3 +416,238 @@ components:
       required:
         - status
 
+    Category:
+      type: object
+      required: [id, slug, name]
+      properties:
+        id: { type: integer }
+        slug: { type: string }
+        name: { type: string }
+        description: { type: ["string", "null"] }
+        imageUrl: { type: ["string", "null"] }
+
+    ProductVariation:
+      type: object
+      required: [id, productId, name, sku, priceCents, stockQuantity]
+      properties:
+        id: { type: integer }
+        productId: { type: integer }
+        name: { type: string }
+        sku: { type: string }
+        priceCents: { type: integer }
+        stockQuantity: { type: integer }
+        imageUrl: { type: ["string", "null"] }
+
+    Product:
+      type: object
+      required:
+        - id
+        - slug
+        - name
+        - description
+        - categoryId
+        - categoryName
+        - franchise
+        - priceCents
+        - isOnSale
+        - isExclusive
+        - isNew
+        - images
+        - popularityScore
+        - totalStock
+        - variations
+        - createdAt
+      properties:
+        id: { type: integer }
+        slug: { type: string }
+        name: { type: string }
+        description: { type: string }
+        categoryId: { type: integer }
+        categoryName: { type: string }
+        franchise: { type: string }
+        priceCents: { type: integer }
+        salePriceCents: { type: ["integer", "null"] }
+        isOnSale: { type: boolean }
+        isExclusive: { type: boolean }
+        isNew: { type: boolean }
+        images:
+          type: array
+          items: { type: string }
+        popularityScore: { type: integer }
+        totalStock: { type: integer }
+        variations:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductVariation"
+        createdAt: { type: string, format: date-time }
+
+    CartItem:
+      type: object
+      required:
+        - id
+        - variationId
+        - productId
+        - productSlug
+        - productName
+        - variationName
+        - sku
+        - unitPriceCents
+        - quantity
+        - lineTotalCents
+        - availableStock
+      properties:
+        id: { type: integer }
+        variationId: { type: integer }
+        productId: { type: integer }
+        productSlug: { type: string }
+        productName: { type: string }
+        variationName: { type: string }
+        sku: { type: string }
+        imageUrl: { type: ["string", "null"] }
+        unitPriceCents: { type: integer }
+        quantity: { type: integer }
+        lineTotalCents: { type: integer }
+        availableStock: { type: integer }
+
+    Cart:
+      type: object
+      required: [id, items, subtotalCents, itemCount]
+      properties:
+        id: { type: string }
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CartItem"
+        subtotalCents: { type: integer }
+        itemCount: { type: integer }
+
+    CartItemInput:
+      type: object
+      required: [variationId, quantity]
+      properties:
+        variationId: { type: integer }
+        quantity: { type: integer, minimum: 1 }
+
+    CartItemUpdate:
+      type: object
+      required: [quantity]
+      properties:
+        quantity: { type: integer, minimum: 1 }
+
+    Address:
+      type: object
+      required: [fullName, line1, city, state, postalCode, country]
+      properties:
+        fullName: { type: string }
+        line1: { type: string }
+        line2: { type: ["string", "null"] }
+        city: { type: string }
+        state: { type: string }
+        postalCode: { type: string }
+        country: { type: string }
+
+    OrderItem:
+      type: object
+      required:
+        - productName
+        - variationName
+        - sku
+        - unitPriceCents
+        - quantity
+        - lineTotalCents
+      properties:
+        productName: { type: string }
+        variationName: { type: string }
+        sku: { type: string }
+        imageUrl: { type: ["string", "null"] }
+        unitPriceCents: { type: integer }
+        quantity: { type: integer }
+        lineTotalCents: { type: integer }
+
+    Order:
+      type: object
+      required:
+        - id
+        - email
+        - shippingAddress
+        - items
+        - subtotalCents
+        - shippingCents
+        - totalCents
+        - status
+        - squareOrderId
+        - createdAt
+      properties:
+        id: { type: integer }
+        email: { type: string }
+        shippingAddress:
+          $ref: "#/components/schemas/Address"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+        subtotalCents: { type: integer }
+        shippingCents: { type: integer }
+        totalCents: { type: integer }
+        status: { type: string }
+        squareOrderId: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    OrderInput:
+      type: object
+      required: [cartId, email, shippingAddress]
+      properties:
+        cartId: { type: string }
+        email: { type: string }
+        shippingAddress:
+          $ref: "#/components/schemas/Address"
+
+    AdminCredentials:
+      type: object
+      required: [password]
+      properties:
+        password: { type: string }
+
+    AdminSession:
+      type: object
+      required: [token]
+      properties:
+        token: { type: string }
+
+    SyncStatus:
+      type: object
+      required: [status, mode, itemsSynced, lastSyncedAt, message]
+      properties:
+        status:
+          type: string
+          enum: [idle, syncing, success, error]
+        mode:
+          type: string
+          enum: [demo, live]
+        itemsSynced: { type: integer }
+        lastSyncedAt: { type: ["string", "null"], format: date-time }
+        message: { type: ["string", "null"] }
+
+    TopProduct:
+      type: object
+      required: [productName, unitsSold, revenueCents]
+      properties:
+        productName: { type: string }
+        unitsSold: { type: integer }
+        revenueCents: { type: integer }
+
+    SalesSummary:
+      type: object
+      required:
+        - totalOrders
+        - totalRevenueCents
+        - ordersLast7Days
+        - topProducts
+      properties:
+        totalOrders: { type: integer }
+        totalRevenueCents: { type: integer }
+        ordersLast7Days: { type: integer }
+        topProducts:
+          type: array
+          items:
+            $ref: "#/components/schemas/TopProduct"

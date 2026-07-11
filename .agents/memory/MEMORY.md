@@ -1,0 +1,1 @@
+- [Orval + Zod v3 codegen pitfalls](orval-zod-codegen-pitfalls.md) — `format: email` breaks typecheck; `<OperationIdPascal>Response`/`Body`-shaped schema names collide with generated exports.

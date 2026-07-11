@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "Figureheadz"
+version = "1.0.0"
+id = "artifacts/figureheadz"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23335
+
+[services.development]
+run = "pnpm --filter @workspace/figureheadz run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/figureheadz", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/figureheadz/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23335"
+BASE_PATH = "/"

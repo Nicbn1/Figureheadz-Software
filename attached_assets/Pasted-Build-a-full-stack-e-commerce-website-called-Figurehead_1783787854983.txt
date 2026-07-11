@@ -1,0 +1,41 @@
+Build a full-stack e-commerce website called Figureheadz for selling collectibles — Funko Pops, vinyl figures, statues, trading cards, and other niche collector items.
+
+TECH STACK
+- Next.js (React) frontend with TypeScript
+- Node/Express (or Next.js API routes) backend
+- PostgreSQL for local caching of product/inventory data
+- Square SDK (square npm package) for Catalog, Inventory, and Payments/Checkout APIs
+- Deploy-ready on Replit (env vars for Square access token, location ID, environment: sandbox/production)
+
+SQUARE INTEGRATION (core requirement)
+1. Inventory sync: Pull all items from Square Catalog API (name, description, price, images, variations like size/edition, SKU) and Inventory API (stock counts per location). Run this as a scheduled sync job (e.g., every 15 min via cron) plus a manual "Sync Now" button in an admin panel. Store synced data in Postgres so the storefront loads fast without hitting Square on every page view.
+2. Stock accuracy: Reflect real-time stock counts; auto-hide or mark "Sold Out" items at zero quantity; decrement local cache immediately after a purchase, then reconcile on next sync.
+3. Checkout/Payments: Use Square's Web Payments SDK (or Square Checkout links) so all payment processing — card, Apple Pay, Google Pay — happens through Square. No other payment processor. Orders should be created in Square via the Orders API so they show up in the Square Dashboard alongside in-person sales.
+4. Webhooks (optional but ideal): Listen for Square inventory/order webhooks to keep stock in near-real-time sync instead of relying solely on polling.
+
+SITE STRUCTURE
+- Home: featured/new arrivals, category tiles (Funko Pops, Statues, Trading Cards, Exclusives, Sale)
+- Shop/Catalog: grid view with filters (category, brand/franchise, price range, in-stock only) and sort (price, newest, popularity)
+- Product Detail Page: image gallery, variation selector (e.g., glow-in-dark, chase variant), price, stock count, add-to-cart, related items
+- Cart: editable quantities, subtotal, promo code field (if using Square's discount/pricing rules)
+- Checkout: Square-hosted payment form, shipping address, order summary
+- Order confirmation & order history (basic account or guest email lookup)
+- Admin panel (password-protected): manual sync trigger, sync status/last-synced timestamp, basic sales snapshot
+
+BRANDING / DESIGN
+Use the attached Figureheadz logo (comic-book starburst, "FIGUREHEADZ" in bold white text with black outline on a gold/yellow burst, set against a blue halftone sunburst background). Build the site's visual identity around this:
+
+- Primary palette: bright cobalt/sky blue as the dominant background/header color, golden yellow as the accent/CTA color, black for outlines/text emphasis, white for contrast text and cards
+- Style: pop-art / comic-book energy — halftone dot patterns, bold black outlines on buttons or cards, slight "impact" typography for headers (bold, italic-leaning sans-serif), starburst or speech-bubble accents used sparingly (e.g., "SALE!" badges, "NEW" tags)
+- CTAs (Add to Cart, Checkout): yellow buttons with black borders, blue hover state
+- Header/Nav: blue background, white/yellow logo lockup, sticky on scroll
+- Product cards: white background with subtle blue-tinted shadow, black border, yellow price tag styling
+- Keep it clean and readable overall — pop-art accents, not clutter. This should feel fun and collectible-hobbyist, not childish.
+
+OTHER REQUIREMENTS
+- Fully responsive (mobile-first, since a lot of collectors browse on phones)
+- Fast image loading (Next.js Image optimization) for figure photos
+- SEO basics: proper meta tags, structured data (Product schema) per item, clean URLs (/product/funko-pop-batman-123)
+- Basic analytics hook (Google Analytics or Plausible placeholder)
+
+Start by scaffolding the Next.js project, setting up the Square SDK connection and a test sync of one product, then build out the storefront pages, then wire up checkout last.

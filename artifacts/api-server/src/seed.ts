@@ -120,6 +120,30 @@ const categories: {
     description: "Limited-run, retailer-exclusive Funko drops.",
     parentSlug: "funko",
   },
+  {
+    slug: "one-piece",
+    name: "One Piece",
+    description: "High-seas pirate adventure trading card sets.",
+    parentSlug: "trading-cards",
+  },
+  {
+    slug: "yu-gi-oh",
+    name: "Yu-Gi-Oh!",
+    description: "Duel monster summoner card sets.",
+    parentSlug: "trading-cards",
+  },
+  {
+    slug: "pokemon",
+    name: "Pokemon",
+    description: "Creature-collector trading card sets.",
+    parentSlug: "trading-cards",
+  },
+  {
+    slug: "magic",
+    name: "Magic",
+    description: "Fantasy spellcasting trading card sets.",
+    parentSlug: "trading-cards",
+  },
 ];
 
 const products: SeedProduct[] = [
@@ -440,6 +464,71 @@ const products: SeedProduct[] = [
     image: "exclusive-golden-nova-reaper.png",
     variations: [
       { name: "Gold Chrome Exclusive", sku: "FK-EXCL-GOLDNOVA", priceCents: 2999, stockQuantity: 10 },
+    ],
+  },
+
+  // Trading card subcategory boosters -- one per subcategory so browsing
+  // "Trading Cards" surfaces every subcategory's pack, same as Funko above.
+  {
+    slug: "grand-voyage-booster",
+    name: "Grand Voyage Booster Pack",
+    description:
+      "Set sail with the Grand Voyage crew in this high-seas pirate-adventure booster pack, guaranteed one holo captain card per pack.",
+    categorySlug: "one-piece",
+    franchise: "Grand Voyage",
+    priceCents: 699,
+    isNew: true,
+    popularityScore: 63,
+    image: "one-piece-grand-voyage-booster.png",
+    variations: [
+      { name: "Single Pack", sku: "TC-ONEPIECE-SINGLE", priceCents: 699, stockQuantity: 90 },
+      { name: "Booster Box (24 packs)", sku: "TC-ONEPIECE-BOX", priceCents: 13999, stockQuantity: 10 },
+    ],
+  },
+  {
+    slug: "arcane-duelists-booster",
+    name: "Arcane Duelists Booster Pack",
+    description:
+      "Summon fierce dragon-like monsters from the Arcane Duelists set, every pack guarantees one dark-fantasy foil rarity.",
+    categorySlug: "yu-gi-oh",
+    franchise: "Arcane Duelists",
+    priceCents: 699,
+    popularityScore: 61,
+    image: "yugioh-arcane-duelists-booster.png",
+    variations: [
+      { name: "Single Pack", sku: "TC-YUGIOH-SINGLE", priceCents: 699, stockQuantity: 85 },
+      { name: "Booster Box (24 packs)", sku: "TC-YUGIOH-BOX", priceCents: 13999, stockQuantity: 8 },
+    ],
+  },
+  {
+    slug: "critter-league-booster",
+    name: "Critter League Booster Pack",
+    description:
+      "Catch and collect adorable creatures from the Critter League set, bright and colorful with a guaranteed rare per pack.",
+    categorySlug: "pokemon",
+    franchise: "Critter League",
+    priceCents: 599,
+    isNew: true,
+    popularityScore: 68,
+    image: "pokemon-critter-league-booster.png",
+    variations: [
+      { name: "Single Pack", sku: "TC-POKEMON-SINGLE", priceCents: 599, stockQuantity: 100 },
+      { name: "Booster Box (24 packs)", sku: "TC-POKEMON-BOX", priceCents: 11999, stockQuantity: 12 },
+    ],
+  },
+  {
+    slug: "runebound-chronicles-booster",
+    name: "Runebound Chronicles Booster Pack",
+    description:
+      "Weave epic spells with the Runebound Chronicles set, featuring hooded spellcasters and glowing rune magic in every pack.",
+    categorySlug: "magic",
+    franchise: "Runebound Chronicles",
+    priceCents: 799,
+    popularityScore: 64,
+    image: "magic-runebound-booster.png",
+    variations: [
+      { name: "Single Pack", sku: "TC-MAGIC-SINGLE", priceCents: 799, stockQuantity: 80 },
+      { name: "Booster Box (24 packs)", sku: "TC-MAGIC-BOX", priceCents: 15999, stockQuantity: 9 },
     ],
   },
 ];

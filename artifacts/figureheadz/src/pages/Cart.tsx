@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { useCart } from "@/lib/cart";
-import { useUpdateCartItem, useRemoveCartItem } from "@workspace/api-client-react";
+import { useUpdateCartItem, useRemoveCartItem, getGetCartQueryKey } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -8,11 +8,29 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function Cart() {
   const { data: cart, isLoading } = useCart();
-  const updateItem = useUpdateCartItem();
-  const removeItem = useRemoveCartItem();
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [, setLocation] = useLocation();
+
+  // Both mutations return the full, freshly-recalculated Cart. Writing that
+  // straight into the query cache (instead of just invalidating and waiting
+  // on a refetch) is what makes quantity/removal changes show up instantly.
+  const cartQueryKey = cart ? getGetCartQueryKey(cart.id) : undefined;
+
+  const updateItem = useUpdateCartItem({
+    mutation: {
+      onSuccess: (updatedCart) => {
+        if (cartQueryKey) queryClient.setQueryData(cartQueryKey, updatedCart);
+      },
+    },
+  });
+  const removeItem = useRemoveCartItem({
+    mutation: {
+      onSuccess: (updatedCart) => {
+        if (cartQueryKey) queryClient.setQueryData(cartQueryKey, updatedCart);
+      },
+    },
+  });
 
   const handleUpdateQuantity = async (itemId: number, newQuantity: number) => {
     if (!cart?.id || newQuantity < 1) return;
@@ -22,7 +40,6 @@ export default function Cart() {
         itemId,
         data: { quantity: newQuantity }
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/cart", cart.id] });
     } catch (err) {
       toast({ variant: "destructive", title: "Oops!", description: "Failed to update quantity." });
     }
@@ -35,7 +52,6 @@ export default function Cart() {
         cartId: cart.id,
         itemId
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/cart", cart.id] });
       toast({ title: "Removed", description: "Item kicked out of the cart." });
     } catch (err) {
       toast({ variant: "destructive", title: "Oops!", description: "Failed to remove item." });

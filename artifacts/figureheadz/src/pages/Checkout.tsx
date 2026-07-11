@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useUser, Show } from "@clerk/react";
 import { useCart, useCartId } from "@/lib/cart";
-import { estimateShippingCents, estimateTaxCents } from "@/lib/pricing";
+import { estimateShippingCents, estimateTaxCents, getDestinationTaxRate } from "@/lib/pricing";
 import { useCreateOrder } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -61,6 +61,7 @@ export default function Checkout() {
   const taxCents = watchedState.trim()
     ? estimateTaxCents(cart?.subtotalCents ?? 0, destination)
     : 0;
+  const taxRate = watchedState.trim() ? getDestinationTaxRate(destination) : 0;
   const estimatedTotalCents = (cart?.subtotalCents ?? 0) + shippingCents + taxCents;
 
   // Prefill the email field once we know the signed-in user's address
@@ -339,7 +340,7 @@ export default function Checkout() {
                 <span>{watchedState.trim() ? `${(shippingCents / 100).toFixed(2)}` : "Enter address"}</span>
               </div>
               <div className="flex justify-between">
-                <span>{watchedState.trim() && taxCents > 0 ? "CT Sales Tax (6.35%)" : "Sales Tax"}</span>
+                <span>{watchedState.trim() && taxRate > 0 ? `Sales Tax (${(taxRate * 100).toFixed(2)}%)` : "Sales Tax"}</span>
                 <span>{watchedState.trim() ? `${(taxCents / 100).toFixed(2)}` : "—"}</span>
               </div>
               <div className="flex justify-between pt-4 border-t border-dashed border-gray-400">

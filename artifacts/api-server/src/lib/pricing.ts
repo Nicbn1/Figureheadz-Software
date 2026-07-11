@@ -69,10 +69,15 @@ export function calculateShippingCents({ state, country }: ShippingDestination):
   return SHIPPING_REST_OF_US_CENTS;
 }
 
-/** CT sales tax applies only to orders shipping to a Connecticut address. */
-export function calculateTaxCents(subtotalCents: number, destination: ShippingDestination): number {
+/** Looks up the destination state's tax rate. Only Connecticut is taxed (0 otherwise). */
+export function getDestinationTaxRate(destination: ShippingDestination): number {
   if (!isUsCountry(destination.country)) return 0;
   const code = normalizeStateCode(destination.state);
-  if (code !== "CT") return 0;
-  return Math.round(subtotalCents * CT_SALES_TAX_RATE);
+  return code === "CT" ? CT_SALES_TAX_RATE : 0;
+}
+
+/** CT sales tax applies only to orders shipping to a Connecticut address. */
+export function calculateTaxCents(subtotalCents: number, destination: ShippingDestination): number {
+  const rate = getDestinationTaxRate(destination);
+  return Math.round(subtotalCents * rate);
 }

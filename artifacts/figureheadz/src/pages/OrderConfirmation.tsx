@@ -86,7 +86,11 @@ export default function OrderConfirmation() {
             <span>${(order.shippingCents / 100).toFixed(2)}</span>
           </div>
           <div className="flex justify-between">
-            <span>{order.taxCents > 0 ? "CT Sales Tax" : "Sales Tax"}</span>
+            <span>
+              {order.taxCents > 0 && order.subtotalCents > 0
+                ? `Sales Tax (${((order.taxCents / order.subtotalCents) * 100).toFixed(2)}%)`
+                : "Sales Tax"}
+            </span>
             <span>${(order.taxCents / 100).toFixed(2)}</span>
           </div>
         </div>

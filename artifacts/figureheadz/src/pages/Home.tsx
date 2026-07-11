@@ -129,22 +129,31 @@ export default function Home() {
 
       {/* Mailing List CTA */}
       <section className="container mx-auto px-4 mt-8">
-        <div className="bg-secondary p-8 md:p-16 comic-border comic-shadow relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+        <div className="bg-secondary p-8 md:p-16 comic-border comic-shadow relative overflow-hidden">
           <div className="absolute inset-0 halftone-bg opacity-20"></div>
-          <div className="relative z-10 max-w-xl">
-            <h2 className="font-display text-5xl md:text-6xl uppercase mb-4 drop-shadow-[2px_2px_0_#fff]">Don't Miss Out!</h2>
-            <p className="text-xl font-medium">Join the Figureheadz transmission. Get alerts on new drops, exclusive variants, and secret sales.</p>
+          <div className="relative z-10 flex flex-col items-center text-center gap-6 max-w-3xl mx-auto">
+            <div>
+              <h2 className="font-display text-5xl md:text-6xl uppercase mb-4 drop-shadow-[2px_2px_0_#fff]">Don't Miss Out!</h2>
+              <p className="text-xl font-medium">Join the Figureheadz transmission. Get alerts on new drops, exclusive variants, and secret sales.</p>
+            </div>
+            <form className="w-full flex flex-col sm:flex-row gap-4 items-stretch justify-center" onSubmit={handleSubscribe}>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="YOUR EMAIL..."
+                className="h-16 px-5 comic-border text-xl font-bold bg-white text-black placeholder:text-black/50 w-full sm:w-auto sm:min-w-[2in] sm:flex-1 sm:max-w-md"
+              />
+              <Button type="submit" size="lg" className="h-16 text-xl px-8 sm:flex-shrink-0">
+                SUBSCRIBE
+              </Button>
+            </form>
+            {email && (
+              <p className="relative z-10 -mt-2 text-sm font-bold bg-white/70 comic-border px-3 py-1 inline-block">
+                We'll send drops to: <span className="font-display">{email}</span>
+              </p>
+            )}
           </div>
-          <form className="relative z-10 w-full md:w-auto flex flex-col sm:flex-row gap-4 flex-1 max-w-2xl" onSubmit={handleSubscribe}>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="YOUR EMAIL..."
-              className="h-14 px-4 comic-border text-lg font-bold w-full flex-1 min-w-0 bg-white text-black placeholder:text-black/50"
-            />
-            <Button type="submit" size="lg">SUBSCRIBE</Button>
-          </form>
         </div>
       </section>
     </div>

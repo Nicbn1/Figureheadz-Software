@@ -278,6 +278,170 @@ const products: SeedProduct[] = [
       { name: "Chase Pack", sku: "CK-CARDS-CHASE", priceCents: 1999, stockQuantity: 8 },
     ],
   },
+
+  // Funko Pop line -- one figure seeded per Funko subcategory so browsing the
+  // "Funko" parent category (which has no products of its own) surfaces the
+  // full spread of pops across every subcategory.
+  {
+    slug: "rustbot-dorbz",
+    name: "Rustbot Dorbz",
+    description:
+      "A scrappy steampunk copper-and-brass mascot squashed into the signature round-bodied Dorbz sculpt, with oversized goggle eyes and a tiny wrench.",
+    categorySlug: "dorbz",
+    franchise: "Iron Vanguard",
+    priceCents: 1299,
+    isNew: true,
+    popularityScore: 60,
+    image: "dorbz-rustbot.png",
+    variations: [
+      { name: "Standard Dorbz", sku: "FK-DORBZ-RUSTBOT", priceCents: 1299, stockQuantity: 45 },
+    ],
+  },
+  {
+    slug: "captain-solara-autograph-pop",
+    name: "Captain Solara Autograph Pop",
+    description:
+      "A hand-signed, individually authenticated Pop of Starforge Chronicles' Captain Solara, complete with certificate of authenticity sticker.",
+    categorySlug: "autograph-pops",
+    franchise: "Starforge Chronicles",
+    priceCents: 5999,
+    isExclusive: true,
+    popularityScore: 71,
+    image: "autograph-captain-solara.png",
+    variations: [
+      { name: "Signed Edition", sku: "FK-AUTO-SOLARA", priceCents: 5999, stockQuantity: 4 },
+    ],
+  },
+  {
+    slug: "crimson-bolt-pop",
+    name: "Crimson Bolt Pop",
+    description:
+      "Vortex Legion's lightning-fast vigilante Crimson Bolt, captured mid-strike in the classic big-head Pop sculpt.",
+    categorySlug: "marvel",
+    franchise: "Vortex Legion",
+    priceCents: 1399,
+    popularityScore: 68,
+    image: "marvel-crimson-bolt.png",
+    variations: [
+      { name: "Standard Pop", sku: "FK-MARVEL-BOLT", priceCents: 1399, stockQuantity: 60 },
+    ],
+  },
+  {
+    slug: "twilight-sentinel-pop",
+    name: "Twilight Sentinel Pop",
+    description:
+      "The stoic, moonlit guardian of the Twilight Guard, rendered in navy and silver with a crescent-moon emblem.",
+    categorySlug: "dc",
+    franchise: "Twilight Guard",
+    priceCents: 1399,
+    popularityScore: 66,
+    image: "dc-twilight-sentinel.png",
+    variations: [
+      { name: "Standard Pop", sku: "FK-DC-SENTINEL", priceCents: 1399, stockQuantity: 55 },
+    ],
+  },
+  {
+    slug: "sakura-blade-pop",
+    name: "Sakura Blade Pop",
+    description:
+      "Blade & Blossom's pink-haired ninja Sakura Blade, sword drawn and scarf flowing, in glossy vinyl Pop form.",
+    categorySlug: "anime",
+    franchise: "Blade & Blossom",
+    priceCents: 1499,
+    isNew: true,
+    popularityScore: 73,
+    image: "anime-sakura-blade.png",
+    variations: [
+      { name: "Standard Pop", sku: "FK-ANIME-SAKURA", priceCents: 1499, stockQuantity: 50 },
+    ],
+  },
+  {
+    slug: "princess-wishwood-pop",
+    name: "Princess Wishwood Pop",
+    description:
+      "The gentle heart of the Wishwood Kingdom, Princess Wishwood twirls in a pastel ballgown with a sparkling tiara.",
+    categorySlug: "disney",
+    franchise: "Wishwood Kingdom",
+    priceCents: 1399,
+    popularityScore: 69,
+    image: "disney-princess-wishwood.png",
+    variations: [
+      { name: "Standard Pop", sku: "FK-DISNEY-WISHWOOD", priceCents: 1399, stockQuantity: 58 },
+    ],
+  },
+  {
+    slug: "detective-muncher-pop",
+    name: "Detective Muncher Pop",
+    description:
+      "Static Sitcom's beloved retro TV detective, trench coat, fedora, and coffee mug included, in classic Pop proportions.",
+    categorySlug: "television",
+    franchise: "Static Sitcom",
+    priceCents: 1299,
+    popularityScore: 58,
+    image: "tv-detective-muncher.png",
+    variations: [
+      { name: "Standard Pop", sku: "FK-TV-MUNCHER", priceCents: 1299, stockQuantity: 62 },
+    ],
+  },
+  {
+    slug: "nightshade-reaper-pop",
+    name: "Nightshade Reaper Pop",
+    description:
+      "A glowing-eyed, lantern-carrying undead figure from the Crypt Keepers universe, tattered robes and all, for horror collectors.",
+    categorySlug: "horror",
+    franchise: "Crypt Keepers",
+    priceCents: 1499,
+    isExclusive: true,
+    popularityScore: 75,
+    image: "horror-nightshade-reaper.png",
+    variations: [
+      { name: "Standard Pop", sku: "FK-HORROR-NIGHTSHADE", priceCents: 1499, stockQuantity: 30 },
+    ],
+  },
+  {
+    slug: "galaxy-reel-stunt-hero-pop",
+    name: "Galaxy Reel Stunt Hero Pop",
+    description:
+      "The rugged blaster-toting adventurer from the Galaxy Reel film series, leather jacket and all, in glossy vinyl Pop form.",
+    categorySlug: "movies",
+    franchise: "Galaxy Reel",
+    priceCents: 1399,
+    popularityScore: 64,
+    image: "movies-galaxy-reel-hero.png",
+    variations: [
+      { name: "Standard Pop", sku: "FK-MOVIES-GALAXYREEL", priceCents: 1399, stockQuantity: 47 },
+    ],
+  },
+  {
+    slug: "pixel-rift-warrior-pop",
+    name: "Pixel Rift Warrior Pop",
+    description:
+      "A blocky, glowing-cyan armored warrior straight out of the Pixel Rift video game, sword crackling with pixelated energy.",
+    categorySlug: "games",
+    franchise: "Pixel Rift",
+    priceCents: 1399,
+    isNew: true,
+    popularityScore: 67,
+    image: "games-pixel-rift-warrior.png",
+    variations: [
+      { name: "Standard Pop", sku: "FK-GAMES-PIXELRIFT", priceCents: 1399, stockQuantity: 52 },
+    ],
+  },
+  {
+    slug: "golden-nova-reaper-pop",
+    name: "Golden Nova Reaper Pop",
+    description:
+      "A limited-run, all-chrome gold variant of Starforge Chronicles' Nova Reaper, individually numbered for serious collectors.",
+    categorySlug: "exclusives",
+    franchise: "Starforge Chronicles",
+    priceCents: 2999,
+    isExclusive: true,
+    popularityScore: 80,
+    image: "exclusive-golden-nova-reaper.png",
+    variations: [
+      { name: "Gold Chrome Exclusive", sku: "FK-EXCL-GOLDNOVA", priceCents: 2999, stockQuantity: 10 },
+    ],
+  },
 ];
 
 async function seed() {

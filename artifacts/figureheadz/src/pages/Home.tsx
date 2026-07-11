@@ -121,8 +121,12 @@ export default function Home() {
             <h2 className="font-display text-5xl md:text-6xl uppercase mb-4 drop-shadow-[2px_2px_0_#fff]">Don't Miss Out!</h2>
             <p className="text-xl font-medium">Join the Figureheadz transmission. Get alerts on new drops, exclusive variants, and secret sales.</p>
           </div>
-          <form className="relative z-10 w-full md:w-auto flex flex-col sm:flex-row gap-4 flex-1 max-w-md" onSubmit={(e) => e.preventDefault()}>
-            <input type="email" placeholder="YOUR EMAIL..." className="h-14 px-4 comic-border text-lg font-bold w-full" />
+          <form className="relative z-10 w-full md:w-auto flex flex-col sm:flex-row gap-4 flex-1 max-w-2xl" onSubmit={(e) => e.preventDefault()}>
+            <input
+              type="email"
+              placeholder="YOUR EMAIL..."
+              className="h-14 px-4 comic-border text-lg font-bold w-full flex-1 min-w-0 bg-white text-black placeholder:text-black/50"
+            />
             <Button type="button" size="lg">SUBSCRIBE</Button>
           </form>
         </div>

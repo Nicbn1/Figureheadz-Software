@@ -9,21 +9,21 @@ export function Header() {
   const [location, setLocation] = useLocation();
   const search = useSearch();
 
-  const franchise = new URLSearchParams(search).get("franchise") || undefined;
+  const categorySlug = new URLSearchParams(search).get("categorySlug") || undefined;
   const onShop = location === "/shop";
 
-  const isShopAllActive = onShop && !franchise;
-  const isStarforgeActive = onShop && franchise === "Starforge Chronicles";
-  const isNeonRoninActive = onShop && franchise === "Neon Ronin";
+  const isShopAllActive = onShop && !categorySlug;
+  const isFunkoActive = onShop && categorySlug === "funko";
+  const isTradingCardsActive = onShop && categorySlug === "trading-cards";
 
   const navLinkClass = (active: boolean) =>
     `font-display text-2xl tracking-wide uppercase drop-shadow-[2px_2px_0_#000] transition-colors ${
       active ? "text-secondary" : "text-white hover:text-secondary"
     }`;
 
-  const goToFranchise = (value: string | null) => {
+  const goToCategory = (value: string | null) => {
     // Toggling the same filter again clears it back to "Shop All"
-    setLocation(value ? `/shop?franchise=${encodeURIComponent(value)}` : "/shop");
+    setLocation(value ? `/shop?categorySlug=${encodeURIComponent(value)}` : "/shop");
   };
 
   return (
@@ -35,22 +35,22 @@ export function Header() {
           </Link>
           
           <nav className="hidden md:flex items-center gap-6">
-            <button type="button" onClick={() => goToFranchise(null)} className={navLinkClass(isShopAllActive)}>
+            <button type="button" onClick={() => goToCategory(null)} className={navLinkClass(isShopAllActive)}>
               Shop All
             </button>
             <button
               type="button"
-              onClick={() => goToFranchise(isStarforgeActive ? null : "Starforge Chronicles")}
-              className={navLinkClass(isStarforgeActive)}
+              onClick={() => goToCategory(isFunkoActive ? null : "funko")}
+              className={navLinkClass(isFunkoActive)}
             >
-              Starforge
+              Funko
             </button>
             <button
               type="button"
-              onClick={() => goToFranchise(isNeonRoninActive ? null : "Neon Ronin")}
-              className={navLinkClass(isNeonRoninActive)}
+              onClick={() => goToCategory(isTradingCardsActive ? null : "trading-cards")}
+              className={navLinkClass(isTradingCardsActive)}
             >
-              Neon Ronin
+              Trading Cards
             </button>
           </nav>
         </div>

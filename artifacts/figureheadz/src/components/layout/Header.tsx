@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import { Link, useLocation, useSearch } from "wouter";
 import { useCart } from "@/lib/cart";
 import { ShoppingCart, Search, User } from "lucide-react";
 import logoUrl from "@/assets/figureheadz-logo.jpeg";
@@ -6,6 +6,25 @@ import logoUrl from "@/assets/figureheadz-logo.jpeg";
 export function Header() {
   const { data: cart } = useCart();
   const itemCount = cart?.itemCount || 0;
+  const [location, setLocation] = useLocation();
+  const search = useSearch();
+
+  const franchise = new URLSearchParams(search).get("franchise") || undefined;
+  const onShop = location === "/shop";
+
+  const isShopAllActive = onShop && !franchise;
+  const isStarforgeActive = onShop && franchise === "Starforge Chronicles";
+  const isNeonRoninActive = onShop && franchise === "Neon Ronin";
+
+  const navLinkClass = (active: boolean) =>
+    `font-display text-2xl tracking-wide uppercase drop-shadow-[2px_2px_0_#000] transition-colors ${
+      active ? "text-secondary" : "text-white hover:text-secondary"
+    }`;
+
+  const goToFranchise = (value: string | null) => {
+    // Toggling the same filter again clears it back to "Shop All"
+    setLocation(value ? `/shop?franchise=${encodeURIComponent(value)}` : "/shop");
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b-4 border-black bg-primary halftone-blue">
@@ -16,15 +35,23 @@ export function Header() {
           </Link>
           
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="/shop" className="font-display text-white text-2xl tracking-wide uppercase hover:text-secondary drop-shadow-[2px_2px_0_#000]">
+            <button type="button" onClick={() => goToFranchise(null)} className={navLinkClass(isShopAllActive)}>
               Shop All
-            </Link>
-            <Link href="/shop?franchise=Starforge+Chronicles" className="font-display text-white text-2xl tracking-wide uppercase hover:text-secondary drop-shadow-[2px_2px_0_#000]">
+            </button>
+            <button
+              type="button"
+              onClick={() => goToFranchise(isStarforgeActive ? null : "Starforge Chronicles")}
+              className={navLinkClass(isStarforgeActive)}
+            >
               Starforge
-            </Link>
-            <Link href="/shop?franchise=Neon+Ronin" className="font-display text-white text-2xl tracking-wide uppercase hover:text-secondary drop-shadow-[2px_2px_0_#000]">
+            </button>
+            <button
+              type="button"
+              onClick={() => goToFranchise(isNeonRoninActive ? null : "Neon Ronin")}
+              className={navLinkClass(isNeonRoninActive)}
+            >
               Neon Ronin
-            </Link>
+            </button>
           </nav>
         </div>
 

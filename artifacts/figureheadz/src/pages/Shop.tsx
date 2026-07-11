@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { useLocation } from "wouter";
+import { useLocation, useSearch } from "wouter";
 import { useListProducts, useListCategories, useListFranchises, type ListProductsSort } from "@workspace/api-client-react";
 import { ProductCard } from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Filter, X, ChevronDown } from "lucide-react";
+import { Filter, ChevronDown } from "lucide-react";
 
 export default function Shop() {
-  const [location, setLocation] = useLocation();
-  const searchParams = new URLSearchParams(window.location.search);
+  const [, setLocation] = useLocation();
+  const search_ = useSearch();
+  const searchParams = new URLSearchParams(search_);
   
   const categorySlug = searchParams.get("categorySlug") || undefined;
   const franchise = searchParams.get("franchise") || undefined;
@@ -41,7 +42,7 @@ export default function Shop() {
   });
 
   const updateFilters = (updates: Record<string, string | null>) => {
-    const newParams = new URLSearchParams(window.location.search);
+    const newParams = new URLSearchParams(search_);
     Object.entries(updates).forEach(([key, value]) => {
       if (value === null) {
         newParams.delete(key);

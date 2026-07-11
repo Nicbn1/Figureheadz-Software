@@ -1,27 +1,51 @@
 import { useGetCart, useCreateCart, getGetCartQueryKey } from "@workspace/api-client-react";
-import { useEffect, useState, useCallback } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useCallback, useSyncExternalStore } from "react";
 
 const CART_ID_KEY = "figureheadz_cart_id";
 
+// Shared external store so every component using useCartId() (Header, Cart,
+// Checkout, ...) observes the same cart id. Previously each hook call kept
+// its own useState seeded from localStorage, so clearing the cart in one
+// component (e.g. Checkout after placing an order) never notified the
+// others (e.g. the Header's cart icon), leaving it stuck showing stale items.
+let cartIdListeners = new Set<() => void>();
+
+function getCartIdSnapshot() {
+  return localStorage.getItem(CART_ID_KEY);
+}
+
+function setCartIdValue(value: string | null) {
+  if (value) {
+    localStorage.setItem(CART_ID_KEY, value);
+  } else {
+    localStorage.removeItem(CART_ID_KEY);
+  }
+  cartIdListeners.forEach((listener) => listener());
+}
+
+function subscribeToCartId(listener: () => void) {
+  cartIdListeners.add(listener);
+  return () => {
+    cartIdListeners.delete(listener);
+  };
+}
+
 export function useCartId() {
-  const [cartId, setCartId] = useState<string | null>(() => localStorage.getItem(CART_ID_KEY));
+  const cartId = useSyncExternalStore(subscribeToCartId, getCartIdSnapshot, () => null);
   const createCart = useCreateCart();
 
   const getOrCreateCart = useCallback(async () => {
-    let currentId = localStorage.getItem(CART_ID_KEY);
+    const currentId = getCartIdSnapshot();
     if (currentId) {
       return currentId;
     }
     const cart = await createCart.mutateAsync();
-    localStorage.setItem(CART_ID_KEY, cart.id);
-    setCartId(cart.id);
+    setCartIdValue(cart.id);
     return cart.id;
   }, [createCart]);
 
   const clearCart = useCallback(() => {
-    localStorage.removeItem(CART_ID_KEY);
-    setCartId(null);
+    setCartIdValue(null);
   }, []);
 
   return { cartId, getOrCreateCart, clearCart };
@@ -29,7 +53,7 @@ export function useCartId() {
 
 export function useCart() {
   const { cartId } = useCartId();
-  
+
   return useGetCart(cartId || "", {
     query: {
       enabled: !!cartId,

@@ -238,35 +238,6 @@ export default function Shop() {
               </div>
             </div>
 
-            {/* Franchises */}
-            <div>
-              <h4 className="font-bold mb-2 uppercase tracking-wider text-sm">Franchise</h4>
-              <div className="space-y-2">
-                <label className="flex items-center gap-2 cursor-pointer group">
-                  <input 
-                    type="radio" 
-                    name="franchise"
-                    checked={!franchise} 
-                    onChange={() => updateFilters({ franchise: null })}
-                    className="w-5 h-5 comic-border accent-primary cursor-pointer" 
-                  />
-                  <span className="font-medium group-hover:text-primary transition-colors">All Franchises</span>
-                </label>
-                {franchises?.map(f => (
-                  <label key={f} className="flex items-center gap-2 cursor-pointer group">
-                    <input 
-                      type="radio" 
-                      name="franchise"
-                      checked={franchise === f} 
-                      onChange={() => updateFilters({ franchise: f })}
-                      className="w-5 h-5 comic-border accent-primary cursor-pointer" 
-                    />
-                    <span className="font-medium group-hover:text-primary transition-colors">{f}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
           </div>
         </aside>
 

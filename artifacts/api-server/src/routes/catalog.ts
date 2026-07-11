@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { and, asc, desc, eq, gte, ilike, lte, ne, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, ilike, inArray, lte, ne, sql } from "drizzle-orm";
 import {
   db,
   categoriesTable,
@@ -68,7 +68,12 @@ router.get("/products", async (req, res): Promise<void> => {
       res.json(ListProductsResponse.parse([]));
       return;
     }
-    conditions.push(eq(productsTable.categoryId, category.id));
+    const children = await db
+      .select({ id: categoriesTable.id })
+      .from(categoriesTable)
+      .where(eq(categoriesTable.parentId, category.id));
+    const categoryIds = [category.id, ...children.map((c) => c.id)];
+    conditions.push(inArray(productsTable.categoryId, categoryIds));
   }
   if (franchise) conditions.push(eq(productsTable.franchise, franchise));
   if (minPriceCents != null) conditions.push(gte(productsTable.priceCents, minPriceCents));

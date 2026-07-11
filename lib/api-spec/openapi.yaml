@@ -425,6 +425,7 @@ components:
         name: { type: string }
         description: { type: ["string", "null"] }
         imageUrl: { type: ["string", "null"] }
+        parentId: { type: ["integer", "null"] }
 
     ProductVariation:
       type: object

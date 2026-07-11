@@ -25,7 +25,8 @@ export const ListCategoriesResponseItem = zod.object({
   "slug": zod.string(),
   "name": zod.string(),
   "description": zod.string().nullish(),
-  "imageUrl": zod.string().nullish()
+  "imageUrl": zod.string().nullish(),
+  "parentId": zod.number().nullish()
 })
 export const ListCategoriesResponse = zod.array(ListCategoriesResponseItem)
 

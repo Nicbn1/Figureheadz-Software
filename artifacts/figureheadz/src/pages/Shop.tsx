@@ -33,6 +33,14 @@ export default function Shop() {
   const { data: categories } = useListCategories();
   const { data: franchises } = useListFranchises();
 
+  const topLevelCategories = categories?.filter(c => !c.parentId);
+  const childCategoriesByParentId = (categories ?? []).reduce<Record<number, typeof categories>>((acc, c) => {
+    if (c.parentId) {
+      acc[c.parentId] = [...(acc[c.parentId] ?? []), c];
+    }
+    return acc;
+  }, {});
+
   // Filter products by boolean flags locally since the API params don't support them directly
   // In a real app we'd add these to ListProductsParams, but we work with what we have
   const filteredProducts = products?.filter(p => {
@@ -168,17 +176,35 @@ export default function Shop() {
                   />
                   <span className="font-medium group-hover:text-primary transition-colors">All Categories</span>
                 </label>
-                {categories?.map(c => (
-                  <label key={c.id} className="flex items-center gap-2 cursor-pointer group">
-                    <input 
-                      type="radio" 
-                      name="category"
-                      checked={categorySlug === c.slug} 
-                      onChange={() => updateFilters({ categorySlug: c.slug })}
-                      className="w-5 h-5 comic-border accent-primary cursor-pointer" 
-                    />
-                    <span className="font-medium group-hover:text-primary transition-colors">{c.name}</span>
-                  </label>
+                {topLevelCategories?.map(c => (
+                  <div key={c.id}>
+                    <label className="flex items-center gap-2 cursor-pointer group">
+                      <input 
+                        type="radio" 
+                        name="category"
+                        checked={categorySlug === c.slug} 
+                        onChange={() => updateFilters({ categorySlug: c.slug })}
+                        className="w-5 h-5 comic-border accent-primary cursor-pointer" 
+                      />
+                      <span className="font-medium group-hover:text-primary transition-colors">{c.name}</span>
+                    </label>
+                    {childCategoriesByParentId[c.id]?.length ? (
+                      <div className="ml-7 mt-2 space-y-2 border-l-2 border-black/10 pl-3">
+                        {childCategoriesByParentId[c.id]!.map(child => (
+                          <label key={child.id} className="flex items-center gap-2 cursor-pointer group">
+                            <input 
+                              type="radio" 
+                              name="category"
+                              checked={categorySlug === child.slug} 
+                              onChange={() => updateFilters({ categorySlug: child.slug })}
+                              className="w-4 h-4 comic-border accent-primary cursor-pointer" 
+                            />
+                            <span className="text-sm font-medium group-hover:text-primary transition-colors">{child.name}</span>
+                          </label>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
                 ))}
               </div>
             </div>

@@ -24,7 +24,13 @@ type SeedProduct = {
   variations: SeedVariation[];
 };
 
-const categories = [
+const categories: {
+  slug: string;
+  name: string;
+  description: string;
+  imageUrl?: string;
+  parentSlug?: string;
+}[] = [
   {
     slug: "vinyl-figures",
     name: "Vinyl Figures",
@@ -42,6 +48,77 @@ const categories = [
     name: "Trading Cards",
     description: "Booster packs, holo sets, and chase-card collections.",
     imageUrl: "products/starforge-booster.png",
+  },
+  {
+    slug: "funko",
+    name: "Funko",
+    description: "Officially licensed Funko collectibles across every fandom.",
+  },
+  {
+    slug: "dorbz",
+    name: "Dorbz!",
+    description: "Round-bodied stylized collectible figures.",
+    parentSlug: "funko",
+  },
+  {
+    slug: "autograph-pops",
+    name: "Autograph Pops",
+    description: "Hand-signed, authenticated collectible figures.",
+    parentSlug: "funko",
+  },
+  {
+    slug: "marvel",
+    name: "Marvel",
+    description: "Heroes and villains from the Marvel universe.",
+    parentSlug: "funko",
+  },
+  {
+    slug: "dc",
+    name: "DC",
+    description: "Heroes and villains from the DC universe.",
+    parentSlug: "funko",
+  },
+  {
+    slug: "anime",
+    name: "Anime",
+    description: "Fan-favorite characters from anime series and films.",
+    parentSlug: "funko",
+  },
+  {
+    slug: "disney",
+    name: "Disney",
+    description: "Classic and modern Disney characters.",
+    parentSlug: "funko",
+  },
+  {
+    slug: "television",
+    name: "Television",
+    description: "Characters from hit TV series.",
+    parentSlug: "funko",
+  },
+  {
+    slug: "horror",
+    name: "Horror",
+    description: "Icons from classic and modern horror.",
+    parentSlug: "funko",
+  },
+  {
+    slug: "movies",
+    name: "Movies",
+    description: "Characters from blockbuster films.",
+    parentSlug: "funko",
+  },
+  {
+    slug: "games",
+    name: "Games",
+    description: "Characters from video games.",
+    parentSlug: "funko",
+  },
+  {
+    slug: "exclusives",
+    name: "Exclusives",
+    description: "Limited-run, retailer-exclusive Funko drops.",
+    parentSlug: "funko",
   },
 ];
 
@@ -208,12 +285,22 @@ async function seed() {
 
   const categoryIdBySlug = new Map<string, number>();
   for (const category of categories) {
+    const parentId = category.parentSlug ? categoryIdBySlug.get(category.parentSlug) ?? null : null;
+    if (category.parentSlug && parentId == null) {
+      throw new Error(`Unknown parent category slug: ${category.parentSlug} (must be seeded before its children)`);
+    }
     const [row] = await db
       .insert(categoriesTable)
-      .values(category)
+      .values({
+        slug: category.slug,
+        name: category.name,
+        description: category.description,
+        imageUrl: category.imageUrl ?? null,
+        parentId,
+      })
       .onConflictDoUpdate({
         target: categoriesTable.slug,
-        set: { name: category.name, description: category.description, imageUrl: category.imageUrl },
+        set: { name: category.name, description: category.description, imageUrl: category.imageUrl ?? null, parentId },
       })
       .returning();
     if (row) categoryIdBySlug.set(category.slug, row.id);

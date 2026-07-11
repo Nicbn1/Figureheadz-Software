@@ -17,6 +17,8 @@ export interface Category {
   description?: string | null;
   /** @nullable */
   imageUrl?: string | null;
+  /** @nullable */
+  parentId?: number | null;
 }
 
 export interface ProductVariation {

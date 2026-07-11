@@ -3,6 +3,16 @@ import { useListFeaturedProducts, useListCategories } from "@workspace/api-clien
 import { ProductCard } from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/button";
 
+// Cycles the brand's comic-book palette across the category boxes so every
+// box on the homepage (not just the "virtual" Exclusives/On Sale ones) reads
+// as part of the same color theme.
+const categoryThemes = [
+  { bg: "bg-primary", text: "text-white", shadow: "drop-shadow-[2px_2px_0_#000]" },
+  { bg: "bg-destructive", text: "text-white", shadow: "drop-shadow-[2px_2px_0_#000]" },
+  { bg: "bg-secondary", text: "text-black", shadow: "drop-shadow-[2px_2px_0_#fff]" },
+  { bg: "bg-primary", text: "text-white", shadow: "drop-shadow-[2px_2px_0_#000]" },
+];
+
 export default function Home() {
   const { data: featuredProducts, isLoading: loadingFeatured } = useListFeaturedProducts();
   const { data: categories, isLoading: loadingCategories } = useListCategories();
@@ -80,14 +90,25 @@ export default function Home() {
           {loadingCategories ? (
             <div className="bg-muted min-h-[200px] comic-border animate-pulse"></div>
           ) : (
-            categories?.map((category) => (
-              <Link key={category.id} href={`/shop?categorySlug=${category.slug}`} className="group relative bg-white p-8 comic-border comic-shadow flex items-center justify-center min-h-[200px] overflow-hidden hover:bg-primary transition-colors">
-                <div className="absolute inset-0 halftone-bg opacity-10 group-hover:opacity-30"></div>
-                <h3 className="relative z-10 font-display text-4xl text-black group-hover:text-white uppercase drop-shadow-[2px_2px_0_#fff] group-hover:drop-shadow-[2px_2px_0_#000] transform group-hover:scale-110 transition-all">
-                  {category.name}
-                </h3>
-              </Link>
-            ))
+            categories
+              ?.filter((category) => !category.parentId)
+              .map((category, i) => {
+                const theme = categoryThemes[i % categoryThemes.length];
+                return (
+                  <Link
+                    key={category.id}
+                    href={`/shop?categorySlug=${category.slug}`}
+                    className={`group relative ${theme.bg} p-8 comic-border comic-shadow flex items-center justify-center min-h-[200px] overflow-hidden`}
+                  >
+                    <div className="absolute inset-0 halftone-bg opacity-30"></div>
+                    <h3
+                      className={`relative z-10 font-display text-4xl ${theme.text} uppercase ${theme.shadow} transform group-hover:scale-110 transition-transform`}
+                    >
+                      {category.name}
+                    </h3>
+                  </Link>
+                );
+              })
           )}
         </div>
       </section>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useSearch } from "wouter";
 import { useListProducts, useListCategories, useListFranchises, type ListProductsSort } from "@workspace/api-client-react";
 import { ProductCard } from "@/components/product/ProductCard";
@@ -40,6 +40,15 @@ export default function Shop() {
     }
     return acc;
   }, {});
+
+  const [expandedParentId, setExpandedParentId] = useState<number | null>(null);
+
+  // Auto-expand a parent category's subcategory list when its child is the active filter
+  useEffect(() => {
+    if (!categorySlug || !categories) return;
+    const current = categories.find(c => c.slug === categorySlug);
+    if (current?.parentId) setExpandedParentId(current.parentId);
+  }, [categorySlug, categories]);
 
   // Filter products by boolean flags locally since the API params don't support them directly
   // In a real app we'd add these to ListProductsParams, but we work with what we have
@@ -176,36 +185,56 @@ export default function Shop() {
                   />
                   <span className="font-medium group-hover:text-primary transition-colors">All Categories</span>
                 </label>
-                {topLevelCategories?.map(c => (
-                  <div key={c.id}>
-                    <label className="flex items-center gap-2 cursor-pointer group">
-                      <input 
-                        type="radio" 
-                        name="category"
-                        checked={categorySlug === c.slug} 
-                        onChange={() => updateFilters({ categorySlug: c.slug })}
-                        className="w-5 h-5 comic-border accent-primary cursor-pointer" 
-                      />
-                      <span className="font-medium group-hover:text-primary transition-colors">{c.name}</span>
-                    </label>
-                    {childCategoriesByParentId[c.id]?.length ? (
-                      <div className="ml-7 mt-2 space-y-2 border-l-2 border-black/10 pl-3">
-                        {childCategoriesByParentId[c.id]!.map(child => (
-                          <label key={child.id} className="flex items-center gap-2 cursor-pointer group">
-                            <input 
-                              type="radio" 
-                              name="category"
-                              checked={categorySlug === child.slug} 
-                              onChange={() => updateFilters({ categorySlug: child.slug })}
-                              className="w-4 h-4 comic-border accent-primary cursor-pointer" 
-                            />
-                            <span className="text-sm font-medium group-hover:text-primary transition-colors">{child.name}</span>
-                          </label>
-                        ))}
+                {topLevelCategories?.map(c => {
+                  const children = childCategoriesByParentId[c.id];
+                  const hasChildren = !!children?.length;
+                  const isExpanded = expandedParentId === c.id;
+                  return (
+                    <div key={c.id}>
+                      <div className="flex items-center justify-between gap-2">
+                        <label className="flex items-center gap-2 cursor-pointer group flex-1">
+                          <input 
+                            type="radio" 
+                            name="category"
+                            checked={categorySlug === c.slug} 
+                            onChange={() => {
+                              updateFilters({ categorySlug: c.slug });
+                              if (hasChildren) setExpandedParentId(c.id);
+                            }}
+                            className="w-5 h-5 comic-border accent-primary cursor-pointer" 
+                          />
+                          <span className="font-medium group-hover:text-primary transition-colors">{c.name}</span>
+                        </label>
+                        {hasChildren && (
+                          <button
+                            type="button"
+                            aria-label={isExpanded ? `Hide ${c.name} subcategories` : `Show ${c.name} subcategories`}
+                            onClick={() => setExpandedParentId(isExpanded ? null : c.id)}
+                            className="p-1 text-muted-foreground hover:text-primary transition-colors"
+                          >
+                            <ChevronDown className={`h-4 w-4 transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+                          </button>
+                        )}
                       </div>
-                    ) : null}
-                  </div>
-                ))}
+                      {hasChildren && isExpanded ? (
+                        <div className="ml-7 mt-2 space-y-2 border-l-2 border-black/10 pl-3">
+                          {children!.map(child => (
+                            <label key={child.id} className="flex items-center gap-2 cursor-pointer group">
+                              <input 
+                                type="radio" 
+                                name="category"
+                                checked={categorySlug === child.slug} 
+                                onChange={() => updateFilters({ categorySlug: child.slug })}
+                                className="w-4 h-4 comic-border accent-primary cursor-pointer" 
+                              />
+                              <span className="text-sm font-medium group-hover:text-primary transition-colors">{child.name}</span>
+                            </label>
+                          ))}
+                        </div>
+                      ) : null}
+                    </div>
+                  );
+                })}
               </div>
             </div>
 

@@ -26,6 +26,7 @@ import type {
   CartItemInput,
   CartItemUpdate,
   Category,
+  ContactMessage,
   HealthStatus,
   ListOrdersByEmailParams,
   ListProductsParams,
@@ -33,6 +34,7 @@ import type {
   OrderInput,
   Product,
   SalesSummary,
+  SendContactMessage200,
   SyncStatus
 } from './api.schemas';
 
@@ -1208,6 +1210,77 @@ export function useGetOrder<TData = Awaited<ReturnType<typeof getOrder>>, TError
 
 
 
+
+export const getSendContactMessageUrl = () => {
+
+
+
+
+  return `/api/contact`
+}
+
+/**
+ * @summary Send a message from the Contact Us form to the store inbox
+ */
+export const sendContactMessage = async (contactMessage: ContactMessage, options?: RequestInit): Promise<SendContactMessage200> => {
+
+  return customFetch<SendContactMessage200>(getSendContactMessageUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(contactMessage)
+  }
+);}
+
+
+
+
+
+export const getSendContactMessageMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sendContactMessage>>, TError,{data: BodyType<ContactMessage>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof sendContactMessage>>, TError,{data: BodyType<ContactMessage>}, TContext> => {
+
+const mutationKey = ['sendContactMessage'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof sendContactMessage>>, {data: BodyType<ContactMessage>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  sendContactMessage(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SendContactMessageMutationResult = NonNullable<Awaited<ReturnType<typeof sendContactMessage>>>
+    export type SendContactMessageMutationBody = BodyType<ContactMessage>
+    export type SendContactMessageMutationError = ErrorType<void>
+
+    /**
+ * @summary Send a message from the Contact Us form to the store inbox
+ */
+export const useSendContactMessage = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sendContactMessage>>, TError,{data: BodyType<ContactMessage>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof sendContactMessage>>,
+        TError,
+        {data: BodyType<ContactMessage>},
+        TContext
+      > => {
+      return useMutation(getSendContactMessageMutationOptions(options));
+    }
 
 export const getAdminLoginUrl = () => {
 

@@ -9,6 +9,12 @@ export interface HealthStatus {
   status: string;
 }
 
+export interface ContactMessage {
+  email: string;
+  reason: string;
+  message: string;
+}
+
 export interface Category {
   id: number;
   slug: string;
@@ -202,5 +208,9 @@ export const ListProductsSort = {
 
 export type ListOrdersByEmailParams = {
 email: string;
+};
+
+export type SendContactMessage200 = {
+  success: boolean;
 };
 

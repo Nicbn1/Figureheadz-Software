@@ -30,6 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useSendContactMessage } from "@workspace/api-client-react";
 
 const contactSchema = z.object({
   email: z.string().email("Enter a valid email address"),
@@ -50,21 +51,29 @@ const REASONS = [
 export function ContactDialog() {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
+  const sendContactMessage = useSendContactMessage();
 
   const form = useForm<ContactValues>({
     resolver: zodResolver(contactSchema),
     defaultValues: { email: "", reason: "", message: "" },
   });
 
-  const onSubmit = (values: ContactValues) => {
-    // No backend inbox exists yet for contact requests -- surface a
-    // confirmation locally so the flow feels complete for the collector.
-    toast({
-      title: "Message sent!",
-      description: "Our crew will get back to you at " + values.email + " soon.",
-    });
-    form.reset();
-    setOpen(false);
+  const onSubmit = async (values: ContactValues) => {
+    try {
+      await sendContactMessage.mutateAsync({ data: values });
+      toast({
+        title: "Message sent!",
+        description: "Our crew will get back to you at " + values.email + " soon.",
+      });
+      form.reset();
+      setOpen(false);
+    } catch {
+      toast({
+        title: "Couldn't send your message",
+        description: "Something went wrong. Please try again in a moment.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -147,8 +156,13 @@ export function ContactDialog() {
             />
 
             <DialogFooter>
-              <Button type="submit" size="lg" className="w-full sm:w-auto">
-                Send
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full sm:w-auto"
+                disabled={sendContactMessage.isPending}
+              >
+                {sendContactMessage.isPending ? "Sending..." : "Send"}
               </Button>
             </DialogFooter>
           </form>

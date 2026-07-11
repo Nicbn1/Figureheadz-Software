@@ -467,6 +467,20 @@ export const GetOrderResponse = zod.object({
 
 
 /**
+ * @summary Send a message from the Contact Us form to the store inbox
+ */
+export const SendContactMessageBody = zod.object({
+  "email": zod.string(),
+  "reason": zod.string(),
+  "message": zod.string()
+})
+
+export const SendContactMessageResponse = zod.object({
+  "success": zod.boolean()
+})
+
+
+/**
  * @summary Admin panel login
  */
 export const AdminLoginBody = zod.object({

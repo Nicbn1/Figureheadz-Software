@@ -16,6 +16,8 @@ tags:
     description: Shopping cart operations
   - name: orders
     description: Checkout and order history
+  - name: contact
+    description: Contact Us form submissions
   - name: admin
     description: Admin panel operations
 paths:
@@ -330,6 +332,32 @@ paths:
         "404":
           description: Not found
 
+  /contact:
+    post:
+      operationId: sendContactMessage
+      tags: [contact]
+      summary: Send a message from the Contact Us form to the store inbox
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactMessage"
+      responses:
+        "200":
+          description: Message delivered
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success]
+                properties:
+                  success: { type: boolean }
+        "400":
+          description: Invalid request
+        "502":
+          description: Message could not be delivered
+
   /admin/login:
     post:
       operationId: adminLogin
@@ -415,6 +443,14 @@ components:
           type: string
       required:
         - status
+
+    ContactMessage:
+      type: object
+      required: [email, reason, message]
+      properties:
+        email: { type: string }
+        reason: { type: string }
+        message: { type: string }
 
     Category:
       type: object

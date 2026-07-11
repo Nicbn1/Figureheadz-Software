@@ -76,7 +76,22 @@ export default function OrderConfirmation() {
           </div>
         </div>
 
-        <div className="flex justify-between items-end border-t-4 border-black pt-4 mb-8">
+        <div className="border-t-4 border-black pt-4 mb-4 space-y-2 text-lg font-medium">
+          <div className="flex justify-between">
+            <span>Subtotal</span>
+            <span>${(order.subtotalCents / 100).toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Shipping</span>
+            <span>${(order.shippingCents / 100).toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>{order.taxCents > 0 ? "CT Sales Tax" : "Sales Tax"}</span>
+            <span>${(order.taxCents / 100).toFixed(2)}</span>
+          </div>
+        </div>
+
+        <div className="flex justify-between items-end border-t border-dashed border-gray-400 pt-4 mb-8">
           <span className="font-display text-3xl uppercase">Total</span>
           <span className="font-display text-5xl text-destructive">${(order.totalCents / 100).toFixed(2)}</span>
         </div>

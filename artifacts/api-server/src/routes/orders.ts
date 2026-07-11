@@ -17,10 +17,9 @@ import {
   GetOrderResponse,
 } from "@workspace/api-zod";
 import { loadCart } from "../lib/cart-helpers";
+import { calculateShippingCents, calculateTaxCents } from "../lib/pricing";
 
 const router: IRouter = Router();
-
-const FLAT_SHIPPING_CENTS = 599;
 
 async function shapeOrder(orderId: number) {
   const [order] = await db.select().from(ordersTable).where(eq(ordersTable.id, orderId));
@@ -42,6 +41,7 @@ async function shapeOrder(orderId: number) {
     items,
     subtotalCents: order.subtotalCents,
     shippingCents: order.shippingCents,
+    taxCents: order.taxCents,
     totalCents: order.totalCents,
     status: order.status,
     squareOrderId: order.squareOrderId,
@@ -77,9 +77,15 @@ router.post("/orders", async (req, res): Promise<void> => {
     }
   }
 
+  const destination = {
+    state: body.data.shippingAddress.state,
+    country: body.data.shippingAddress.country,
+  };
+
   const subtotalCents = loadedCart.subtotalCents;
-  const shippingCents = FLAT_SHIPPING_CENTS;
-  const totalCents = subtotalCents + shippingCents;
+  const shippingCents = calculateShippingCents(destination);
+  const taxCents = calculateTaxCents(subtotalCents, destination);
+  const totalCents = subtotalCents + shippingCents + taxCents;
 
   const [order] = await db
     .insert(ordersTable)
@@ -94,6 +100,7 @@ router.post("/orders", async (req, res): Promise<void> => {
       country: body.data.shippingAddress.country,
       subtotalCents,
       shippingCents,
+      taxCents,
       totalCents,
       status: "paid",
       // Populated once the Square connector is attached and a real payment

@@ -14,6 +14,7 @@ export const ordersTable = pgTable("orders", {
   country: text("country").notNull(),
   subtotalCents: integer("subtotal_cents").notNull(),
   shippingCents: integer("shipping_cents").notNull(),
+  taxCents: integer("tax_cents").notNull().default(0),
   totalCents: integer("total_cents").notNull(),
   status: text("status").notNull().default("paid"),
   squareOrderId: text("square_order_id"),

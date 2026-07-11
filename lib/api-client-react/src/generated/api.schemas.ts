@@ -116,6 +116,7 @@ export interface Order {
   items: OrderItem[];
   subtotalCents: number;
   shippingCents: number;
+  taxCents: number;
   totalCents: number;
   status: string;
   /** @nullable */

@@ -1,3 +1,4 @@
+import path from "node:path";
 import express, { type Express } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
@@ -49,5 +50,22 @@ app.use(
 );
 
 app.use("/api", router);
+
+// ── Production: serve the built React frontend ──────────────────────────────
+// The frontend is built into artifacts/figureheadz/dist/public by `vite build`.
+// In production, Express serves those static assets and falls back to index.html
+// for all non-API routes so client-side routing (Wouter) works correctly.
+if (process.env.NODE_ENV === "production") {
+  // __dirname is set by the esbuild banner to the directory of the compiled bundle
+  // (artifacts/api-server/dist), so two levels up lands us at artifacts/.
+  const frontendDir = path.resolve(__dirname, "../../figureheadz/dist/public");
+  app.use(express.static(frontendDir));
+
+  // SPA fallback — send index.html for every unmatched route so that deep
+  // links like /shop, /orders, /product/:slug work after a hard refresh.
+  app.use((_req, res) => {
+    res.sendFile(path.join(frontendDir, "index.html"));
+  });
+}
 
 export default app;

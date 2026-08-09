@@ -19,6 +19,7 @@ import Orders from '@/pages/Orders';
 import Account from '@/pages/Account';
 import SignInPage from '@/pages/SignIn';
 import SignUpPage from '@/pages/SignUp';
+import Appearances from '@/pages/Appearances';
 import AdminLogin from '@/pages/admin/Login';
 import AdminDashboard from '@/pages/admin/Dashboard';
 
@@ -107,6 +108,7 @@ function Router() {
         <Route path="/account" component={Account} />
         <Route path="/sign-in/*?" component={SignInPage} />
         <Route path="/sign-up/*?" component={SignUpPage} />
+        <Route path="/appearances" component={Appearances} />
         <Route path="/admin/login" component={AdminLogin} />
         <Route path="/admin" component={AdminDashboard} />
         <Route component={NotFound} />

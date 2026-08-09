@@ -53,6 +53,12 @@ export function Header() {
             >
               Trading Cards
             </button>
+            <Link
+              href="/appearances"
+              className={navLinkClass(location === "/appearances")}
+            >
+              Upcoming Appearances
+            </Link>
           </nav>
         </div>
 

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import {
   useGetSalesSummary,
@@ -6,17 +6,70 @@ import {
   useGetSyncStatus,
   getGetSyncStatusQueryKey,
   useTriggerSync,
+  useAdminListAppearances,
+  getAdminListAppearancesQueryKey,
+  useCreateAppearance,
+  useUpdateAppearance,
+  useDeleteAppearance,
+  type Appearance,
 } from "@workspace/api-client-react";
 import { getAdminToken, setAdminToken } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, RefreshCw, Box, DollarSign, ShoppingCart, Activity } from "lucide-react";
+import {
+  LogOut,
+  RefreshCw,
+  Box,
+  DollarSign,
+  ShoppingCart,
+  Activity,
+  CalendarDays,
+  Plus,
+  Pencil,
+  Trash2,
+  X,
+  Check,
+  MapPin,
+  Link,
+} from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+
+type AppearanceForm = {
+  name: string;
+  date: string;
+  location: string;
+  description: string;
+  link: string;
+};
+
+const EMPTY_FORM: AppearanceForm = {
+  name: "",
+  date: "",
+  location: "",
+  description: "",
+  link: "",
+};
+
+function formatDate(dateStr: string) {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  return new Date(year, month - 1, day).toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
 
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // Appearance form state
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState<AppearanceForm>(EMPTY_FORM);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   useEffect(() => {
     if (!getAdminToken()) {
@@ -38,9 +91,16 @@ export default function AdminDashboard() {
     }
   });
 
+  const { data: appearances, isLoading: loadingAppearances } = useAdminListAppearances({
+    query: { queryKey: getAdminListAppearancesQueryKey() },
+  });
+
+  const createAppearance = useCreateAppearance();
+  const updateAppearance = useUpdateAppearance();
+  const deleteAppearance = useDeleteAppearance();
+
   const triggerSync = useTriggerSync();
 
-  // Handle unauthorized gracefully by redirecting
   useEffect(() => {
     if (authError) {
       setAdminToken(null);
@@ -64,7 +124,74 @@ export default function AdminDashboard() {
     }
   };
 
+  const openCreate = () => {
+    setEditingId(null);
+    setForm(EMPTY_FORM);
+    setShowForm(true);
+  };
+
+  const openEdit = (a: Appearance) => {
+    setEditingId(a.id);
+    setForm({
+      name: a.name,
+      date: a.date,
+      location: a.location,
+      description: a.description ?? "",
+      link: a.link ?? "",
+    });
+    setShowForm(true);
+  };
+
+  const closeForm = () => {
+    setShowForm(false);
+    setEditingId(null);
+    setForm(EMPTY_FORM);
+  };
+
+  const handleSubmit = async () => {
+    if (!form.name.trim() || !form.date || !form.location.trim()) {
+      toast({ variant: "destructive", title: "Missing Fields", description: "Name, date, and location are required." });
+      return;
+    }
+    const payload = {
+      name: form.name.trim(),
+      date: form.date,
+      location: form.location.trim(),
+      description: form.description.trim() || null,
+      link: form.link.trim() || null,
+    };
+    try {
+      if (editingId !== null) {
+        await updateAppearance.mutateAsync({ id: editingId, data: payload });
+        toast({ title: "Event Updated", description: `"${payload.name}" has been saved.` });
+      } else {
+        await createAppearance.mutateAsync({ data: payload });
+        toast({ title: "Event Created", description: `"${payload.name}" has been added.` });
+      }
+      queryClient.invalidateQueries({ queryKey: getAdminListAppearancesQueryKey() });
+      closeForm();
+    } catch {
+      toast({ variant: "destructive", title: "Error", description: "Could not save the event." });
+    }
+  };
+
+  const handleDelete = async (id: number, name: string) => {
+    setDeletingId(id);
+    try {
+      await deleteAppearance.mutateAsync({ id });
+      toast({ title: "Event Deleted", description: `"${name}" removed.` });
+      queryClient.invalidateQueries({ queryKey: getAdminListAppearancesQueryKey() });
+    } catch {
+      toast({ variant: "destructive", title: "Error", description: "Could not delete the event." });
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   if (!getAdminToken()) return null;
+
+  const isSaving = createAppearance.isPending || updateAppearance.isPending;
+  const today = new Date().toISOString().slice(0, 10);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -137,7 +264,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Right Column - Sales Data */}
+        {/* Right Column - Sales Data + Appearances */}
         <div className="lg:col-span-2 space-y-8">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="bg-primary text-white p-6 comic-border shadow-[4px_4px_0_#000]">
@@ -199,6 +326,179 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+          </div>
+
+          {/* Appearances Management */}
+          <div className="bg-white p-6 comic-border shadow-[6px_6px_0_#000]">
+            <div className="flex items-center justify-between mb-6 border-b-4 border-black pb-4">
+              <div className="flex items-center gap-3">
+                <CalendarDays className="h-6 w-6 text-primary" />
+                <h2 className="font-display text-3xl uppercase">Appearances</h2>
+              </div>
+              {!showForm && (
+                <Button size="sm" onClick={openCreate}>
+                  <Plus className="mr-2 h-4 w-4" /> Add Event
+                </Button>
+              )}
+            </div>
+
+            {/* Inline form */}
+            {showForm && (
+              <div className="bg-muted p-5 comic-border mb-6 space-y-4">
+                <h3 className="font-display text-xl uppercase">
+                  {editingId !== null ? "Edit Event" : "New Event"}
+                </h3>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs font-bold uppercase mb-1">Event Name *</label>
+                    <input
+                      className="w-full border-2 border-black px-3 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder="e.g. San Diego Comic-Con"
+                      value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase mb-1">Date *</label>
+                    <input
+                      type="date"
+                      className="w-full border-2 border-black px-3 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-primary"
+                      value={form.date}
+                      min={today}
+                      onChange={(e) => setForm({ ...form, date: e.target.value })}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase mb-1">Location *</label>
+                    <input
+                      className="w-full border-2 border-black px-3 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder="e.g. San Diego Convention Center"
+                      value={form.location}
+                      onChange={(e) => setForm({ ...form, location: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs font-bold uppercase mb-1">Description</label>
+                    <textarea
+                      className="w-full border-2 border-black px-3 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                      rows={3}
+                      placeholder="What's happening at this event?"
+                      value={form.description}
+                      onChange={(e) => setForm({ ...form, description: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs font-bold uppercase mb-1">Link (optional)</label>
+                    <input
+                      type="url"
+                      className="w-full border-2 border-black px-3 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder="https://..."
+                      value={form.link}
+                      onChange={(e) => setForm({ ...form, link: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex gap-3 pt-2">
+                  <Button onClick={handleSubmit} disabled={isSaving}>
+                    <Check className="mr-2 h-4 w-4" />
+                    {isSaving ? "Saving..." : editingId !== null ? "Save Changes" : "Create Event"}
+                  </Button>
+                  <Button variant="outline" onClick={closeForm} disabled={isSaving}>
+                    <X className="mr-2 h-4 w-4" /> Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Appearances list */}
+            {loadingAppearances ? (
+              <div className="space-y-3">
+                {[1, 2].map((i) => (
+                  <div key={i} className="h-20 bg-muted animate-pulse comic-border" />
+                ))}
+              </div>
+            ) : !appearances || appearances.length === 0 ? (
+              <p className="text-center text-muted-foreground font-medium py-8">
+                No events yet. Add one above!
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {appearances.map((a) => {
+                  const isPast = a.date < today;
+                  return (
+                    <div
+                      key={a.id}
+                      className={`flex flex-col sm:flex-row sm:items-start gap-4 p-4 comic-border ${isPast ? "opacity-50 bg-muted" : "bg-white"}`}
+                    >
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-bold text-lg leading-tight">{a.name}</span>
+                          {isPast && (
+                            <span className="text-xs font-bold uppercase bg-muted-foreground/20 px-2 py-0.5 comic-border">
+                              Past
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-sm text-muted-foreground font-medium mt-1 space-y-0.5">
+                          <div className="flex items-center gap-1.5">
+                            <CalendarDays className="h-3.5 w-3.5 shrink-0" />
+                            {formatDate(a.date)}
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <MapPin className="h-3.5 w-3.5 shrink-0" />
+                            {a.location}
+                          </div>
+                          {a.link && (
+                            <div className="flex items-center gap-1.5 truncate">
+                              <Link className="h-3.5 w-3.5 shrink-0" />
+                              <a
+                                href={a.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="underline truncate hover:text-primary"
+                              >
+                                {a.link}
+                              </a>
+                            </div>
+                          )}
+                        </div>
+                        {a.description && (
+                          <p className="text-sm mt-1 line-clamp-2 text-foreground/70">{a.description}</p>
+                        )}
+                      </div>
+                      <div className="flex gap-2 shrink-0">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => openEdit(a)}
+                          disabled={showForm}
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleDelete(a.id, a.name)}
+                          disabled={deletingId === a.id}
+                        >
+                          {deletingId === a.id ? (
+                            <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                          ) : (
+                            <Trash2 className="h-3.5 w-3.5" />
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>

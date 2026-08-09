@@ -22,11 +22,14 @@ import type {
 import type {
   AdminCredentials,
   AdminSession,
+  Appearance,
+  AppearanceInput,
   Cart,
   CartItemInput,
   CartItemUpdate,
   Category,
   ContactMessage,
+  DeleteAppearance200,
   HealthStatus,
   ListOrdersByEmailParams,
   ListProductsParams,
@@ -1280,6 +1283,374 @@ export const useSendContactMessage = <TError = ErrorType<void>,
         TContext
       > => {
       return useMutation(getSendContactMessageMutationOptions(options));
+    }
+
+export const getListAppearancesUrl = () => {
+
+
+
+
+  return `/api/appearances`
+}
+
+/**
+ * @summary List upcoming appearance events (future dates only, sorted by date)
+ */
+export const listAppearances = async ( options?: RequestInit): Promise<Appearance[]> => {
+
+  return customFetch<Appearance[]>(getListAppearancesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListAppearancesQueryKey = () => {
+    return [
+    `/api/appearances`
+    ] as const;
+    }
+
+
+export const getListAppearancesQueryOptions = <TData = Awaited<ReturnType<typeof listAppearances>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listAppearances>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListAppearancesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listAppearances>>> = ({ signal }) => listAppearances({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listAppearances>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListAppearancesQueryResult = NonNullable<Awaited<ReturnType<typeof listAppearances>>>
+export type ListAppearancesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List upcoming appearance events (future dates only, sorted by date)
+ */
+
+export function useListAppearances<TData = Awaited<ReturnType<typeof listAppearances>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listAppearances>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListAppearancesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminListAppearancesUrl = () => {
+
+
+
+
+  return `/api/admin/appearances`
+}
+
+/**
+ * @summary List all appearances (admin — includes past events)
+ */
+export const adminListAppearances = async ( options?: RequestInit): Promise<Appearance[]> => {
+
+  return customFetch<Appearance[]>(getAdminListAppearancesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminListAppearancesQueryKey = () => {
+    return [
+    `/api/admin/appearances`
+    ] as const;
+    }
+
+
+export const getAdminListAppearancesQueryOptions = <TData = Awaited<ReturnType<typeof adminListAppearances>>, TError = ErrorType<void>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminListAppearances>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminListAppearancesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminListAppearances>>> = ({ signal }) => adminListAppearances({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminListAppearances>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminListAppearancesQueryResult = NonNullable<Awaited<ReturnType<typeof adminListAppearances>>>
+export type AdminListAppearancesQueryError = ErrorType<void>
+
+
+/**
+ * @summary List all appearances (admin — includes past events)
+ */
+
+export function useAdminListAppearances<TData = Awaited<ReturnType<typeof adminListAppearances>>, TError = ErrorType<void>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminListAppearances>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminListAppearancesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateAppearanceUrl = () => {
+
+
+
+
+  return `/api/admin/appearances`
+}
+
+/**
+ * @summary Create a new appearance event
+ */
+export const createAppearance = async (appearanceInput: AppearanceInput, options?: RequestInit): Promise<Appearance> => {
+
+  return customFetch<Appearance>(getCreateAppearanceUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(appearanceInput)
+  }
+);}
+
+
+
+
+
+export const getCreateAppearanceMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAppearance>>, TError,{data: BodyType<AppearanceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createAppearance>>, TError,{data: BodyType<AppearanceInput>}, TContext> => {
+
+const mutationKey = ['createAppearance'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAppearance>>, {data: BodyType<AppearanceInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createAppearance(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateAppearanceMutationResult = NonNullable<Awaited<ReturnType<typeof createAppearance>>>
+    export type CreateAppearanceMutationBody = BodyType<AppearanceInput>
+    export type CreateAppearanceMutationError = ErrorType<void>
+
+    /**
+ * @summary Create a new appearance event
+ */
+export const useCreateAppearance = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAppearance>>, TError,{data: BodyType<AppearanceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createAppearance>>,
+        TError,
+        {data: BodyType<AppearanceInput>},
+        TContext
+      > => {
+      return useMutation(getCreateAppearanceMutationOptions(options));
+    }
+
+export const getUpdateAppearanceUrl = (id: number,) => {
+
+
+
+
+  return `/api/admin/appearances/${id}`
+}
+
+/**
+ * @summary Update an appearance event
+ */
+export const updateAppearance = async (id: number,
+    appearanceInput: AppearanceInput, options?: RequestInit): Promise<Appearance> => {
+
+  return customFetch<Appearance>(getUpdateAppearanceUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(appearanceInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAppearanceMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAppearance>>, TError,{id: number;data: BodyType<AppearanceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAppearance>>, TError,{id: number;data: BodyType<AppearanceInput>}, TContext> => {
+
+const mutationKey = ['updateAppearance'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAppearance>>, {id: number;data: BodyType<AppearanceInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateAppearance(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAppearanceMutationResult = NonNullable<Awaited<ReturnType<typeof updateAppearance>>>
+    export type UpdateAppearanceMutationBody = BodyType<AppearanceInput>
+    export type UpdateAppearanceMutationError = ErrorType<void>
+
+    /**
+ * @summary Update an appearance event
+ */
+export const useUpdateAppearance = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAppearance>>, TError,{id: number;data: BodyType<AppearanceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAppearance>>,
+        TError,
+        {id: number;data: BodyType<AppearanceInput>},
+        TContext
+      > => {
+      return useMutation(getUpdateAppearanceMutationOptions(options));
+    }
+
+export const getDeleteAppearanceUrl = (id: number,) => {
+
+
+
+
+  return `/api/admin/appearances/${id}`
+}
+
+/**
+ * @summary Delete an appearance event
+ */
+export const deleteAppearance = async (id: number, options?: RequestInit): Promise<DeleteAppearance200> => {
+
+  return customFetch<DeleteAppearance200>(getDeleteAppearanceUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeleteAppearanceMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAppearance>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteAppearance>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deleteAppearance'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAppearance>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteAppearance(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteAppearanceMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAppearance>>>
+
+    export type DeleteAppearanceMutationError = ErrorType<void>
+
+    /**
+ * @summary Delete an appearance event
+ */
+export const useDeleteAppearance = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAppearance>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteAppearance>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDeleteAppearanceMutationOptions(options));
     }
 
 export const getAdminLoginUrl = () => {

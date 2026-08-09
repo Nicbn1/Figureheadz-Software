@@ -20,6 +20,8 @@ tags:
     description: Contact Us form submissions
   - name: admin
     description: Admin panel operations
+  - name: appearances
+    description: Convention and signing appearance events
 paths:
   /healthz:
     get:
@@ -358,6 +360,120 @@ paths:
         "502":
           description: Message could not be delivered
 
+  /appearances:
+    get:
+      operationId: listAppearances
+      tags: [appearances]
+      summary: List upcoming appearance events (future dates only, sorted by date)
+      responses:
+        "200":
+          description: Upcoming appearances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Appearance"
+
+  /admin/appearances:
+    get:
+      operationId: adminListAppearances
+      tags: [admin]
+      summary: List all appearances (admin — includes past events)
+      security:
+        - adminToken: []
+      responses:
+        "200":
+          description: All appearances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Appearance"
+        "401":
+          description: Unauthorized
+    post:
+      operationId: createAppearance
+      tags: [admin]
+      summary: Create a new appearance event
+      security:
+        - adminToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppearanceInput"
+      responses:
+        "201":
+          description: Created appearance
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appearance"
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+
+  /admin/appearances/{id}:
+    put:
+      operationId: updateAppearance
+      tags: [admin]
+      summary: Update an appearance event
+      security:
+        - adminToken: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppearanceInput"
+      responses:
+        "200":
+          description: Updated appearance
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appearance"
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteAppearance
+      tags: [admin]
+      summary: Delete an appearance event
+      security:
+        - adminToken: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success]
+                properties:
+                  success: { type: boolean }
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+
   /admin/login:
     post:
       operationId: adminLogin
@@ -690,3 +806,25 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/TopProduct"
+
+    Appearance:
+      type: object
+      required: [id, name, date, location, createdAt]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        date: { type: string, description: "ISO date string (YYYY-MM-DD)" }
+        location: { type: string }
+        description: { type: ["string", "null"] }
+        link: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+
+    AppearanceInput:
+      type: object
+      required: [name, date, location]
+      properties:
+        name: { type: string }
+        date: { type: string, description: "ISO date string (YYYY-MM-DD)" }
+        location: { type: string }
+        description: { type: ["string", "null"] }
+        link: { type: ["string", "null"] }

@@ -1,18 +1,118 @@
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, MapPin, ExternalLink, Ticket } from "lucide-react";
+import { useListAppearances } from "@workspace/api-client-react";
+import { Button } from "@/components/ui/button";
+
+function formatDate(dateStr: string) {
+  // dateStr is YYYY-MM-DD — parse as local date to avoid timezone shifts
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const d = new Date(year, month - 1, day);
+  return d.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
 
 export default function Appearances() {
+  const { data: appearances, isLoading } = useListAppearances();
+
   return (
-    <main className="container mx-auto px-4 py-20 text-center">
-      <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 comic-border mb-6">
-        <CalendarDays className="h-10 w-10 text-primary" />
+    <main className="container mx-auto px-4 py-16">
+      {/* Header */}
+      <div className="text-center mb-14">
+        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 comic-border mb-6">
+          <CalendarDays className="h-10 w-10 text-primary" />
+        </div>
+        <h1 className="font-display text-5xl uppercase mb-4 drop-shadow-[3px_3px_0_#000]">
+          Upcoming Appearances
+        </h1>
+        <p className="text-muted-foreground text-lg max-w-md mx-auto">
+          Catch us in person at conventions, pop-ups, and signing events near
+          you!
+        </p>
       </div>
-      <h1 className="font-display text-5xl uppercase mb-4 drop-shadow-[3px_3px_0_#000]">
-        Upcoming Appearances
-      </h1>
-      <p className="text-muted-foreground text-lg max-w-md mx-auto">
-        No appearances scheduled yet — check back soon for conventions, pop-ups,
-        and signing events near you!
-      </p>
+
+      {/* Content */}
+      {isLoading ? (
+        <div className="space-y-6 max-w-3xl mx-auto">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="h-36 bg-muted animate-pulse comic-border"
+            />
+          ))}
+        </div>
+      ) : !appearances || appearances.length === 0 ? (
+        <div className="text-center py-16">
+          <p className="text-muted-foreground text-lg max-w-md mx-auto">
+            No appearances scheduled yet — check back soon!
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-6 max-w-3xl mx-auto">
+          {appearances.map((event) => (
+            <div
+              key={event.id}
+              className="bg-white comic-border shadow-[6px_6px_0_#000] p-6 flex flex-col sm:flex-row gap-6"
+            >
+              {/* Date badge */}
+              <div className="shrink-0 flex flex-col items-center justify-center bg-primary text-white comic-border px-6 py-4 min-w-[90px]">
+                <span className="font-display text-3xl leading-none">
+                  {formatDate(event.date).split(",")[0].trim().slice(0, 3).toUpperCase()}
+                </span>
+                <span className="font-bold text-xl leading-none mt-1">
+                  {new Date(
+                    Number(event.date.split("-")[0]),
+                    Number(event.date.split("-")[1]) - 1,
+                    Number(event.date.split("-")[2])
+                  ).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                </span>
+                <span className="text-sm opacity-80 mt-1">
+                  {event.date.split("-")[0]}
+                </span>
+              </div>
+
+              {/* Details */}
+              <div className="flex-1 min-w-0">
+                <h2 className="font-display text-2xl uppercase leading-tight mb-1">
+                  {event.name}
+                </h2>
+                <div className="flex items-center gap-2 text-muted-foreground font-medium mb-3">
+                  <MapPin className="h-4 w-4 shrink-0" />
+                  <span>{event.location}</span>
+                </div>
+                {event.description && (
+                  <p className="text-sm text-foreground/80 mb-4 leading-relaxed">
+                    {event.description}
+                  </p>
+                )}
+                {event.link && (
+                  <Button asChild size="sm" className="comic-border">
+                    <a
+                      href={event.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {event.link.toLowerCase().includes("ticket") ? (
+                        <>
+                          <Ticket className="mr-2 h-4 w-4" />
+                          Get Tickets
+                        </>
+                      ) : (
+                        <>
+                          <ExternalLink className="mr-2 h-4 w-4" />
+                          Learn More
+                        </>
+                      )}
+                    </a>
+                  </Button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </main>
   );
 }

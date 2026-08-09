@@ -481,6 +481,96 @@ export const SendContactMessageResponse = zod.object({
 
 
 /**
+ * @summary List upcoming appearance events (future dates only, sorted by date)
+ */
+export const ListAppearancesResponseItem = zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "date": zod.string().describe('ISO date string (YYYY-MM-DD)'),
+  "location": zod.string(),
+  "description": zod.string().nullish(),
+  "link": zod.string().nullish(),
+  "createdAt": zod.coerce.date()
+})
+export const ListAppearancesResponse = zod.array(ListAppearancesResponseItem)
+
+
+/**
+ * @summary List all appearances (admin — includes past events)
+ */
+export const AdminListAppearancesResponseItem = zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "date": zod.string().describe('ISO date string (YYYY-MM-DD)'),
+  "location": zod.string(),
+  "description": zod.string().nullish(),
+  "link": zod.string().nullish(),
+  "createdAt": zod.coerce.date()
+})
+export const AdminListAppearancesResponse = zod.array(AdminListAppearancesResponseItem)
+
+
+/**
+ * @summary Create a new appearance event
+ */
+export const CreateAppearanceBody = zod.object({
+  "name": zod.string(),
+  "date": zod.string().describe('ISO date string (YYYY-MM-DD)'),
+  "location": zod.string(),
+  "description": zod.string().nullish(),
+  "link": zod.string().nullish()
+})
+
+export const CreateAppearanceResponse = zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "date": zod.string().describe('ISO date string (YYYY-MM-DD)'),
+  "location": zod.string(),
+  "description": zod.string().nullish(),
+  "link": zod.string().nullish(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update an appearance event
+ */
+export const UpdateAppearanceParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateAppearanceBody = zod.object({
+  "name": zod.string(),
+  "date": zod.string().describe('ISO date string (YYYY-MM-DD)'),
+  "location": zod.string(),
+  "description": zod.string().nullish(),
+  "link": zod.string().nullish()
+})
+
+export const UpdateAppearanceResponse = zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "date": zod.string().describe('ISO date string (YYYY-MM-DD)'),
+  "location": zod.string(),
+  "description": zod.string().nullish(),
+  "link": zod.string().nullish(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Delete an appearance event
+ */
+export const DeleteAppearanceParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DeleteAppearanceResponse = zod.object({
+  "success": zod.boolean()
+})
+
+
+/**
  * @summary Admin panel login
  */
 export const AdminLoginBody = zod.object({

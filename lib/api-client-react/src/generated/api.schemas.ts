@@ -185,6 +185,30 @@ export interface SalesSummary {
   topProducts: TopProduct[];
 }
 
+export interface Appearance {
+  id: number;
+  name: string;
+  /** ISO date string (YYYY-MM-DD) */
+  date: string;
+  location: string;
+  /** @nullable */
+  description?: string | null;
+  /** @nullable */
+  link?: string | null;
+  createdAt: string;
+}
+
+export interface AppearanceInput {
+  name: string;
+  /** ISO date string (YYYY-MM-DD) */
+  date: string;
+  location: string;
+  /** @nullable */
+  description?: string | null;
+  /** @nullable */
+  link?: string | null;
+}
+
 export type ListProductsParams = {
 categorySlug?: string;
 franchise?: string;
@@ -211,6 +235,10 @@ email: string;
 };
 
 export type SendContactMessage200 = {
+  success: boolean;
+};
+
+export type DeleteAppearance200 = {
   success: boolean;
 };
 

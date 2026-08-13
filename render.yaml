@@ -26,12 +26,10 @@ services:
     # 4. Compile the API server with esbuild
     # 5. Push the Drizzle schema to the database
     buildCommand: >
-      corepack enable &&
-      corepack prepare pnpm@10 --activate &&
-      pnpm install --no-frozen-lockfile &&
-      BASE_PATH=/ PORT=3000 pnpm --filter @workspace/figureheadz run build &&
-      pnpm --filter @workspace/api-server run build &&
-      pnpm --filter @workspace/db run push
+      npx --yes pnpm@10 install --no-frozen-lockfile &&
+      BASE_PATH=/ PORT=3000 npx pnpm@10 --filter @workspace/figureheadz run build &&
+      npx pnpm@10 --filter @workspace/api-server run build &&
+      npx pnpm@10 --filter @workspace/db run push
 
     startCommand: node --enable-source-maps artifacts/api-server/dist/index.mjs
 

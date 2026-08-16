@@ -58,7 +58,7 @@ export default function Home() {
       {/* Featured Products */}
       <section className="container mx-auto px-4">
         <div className="flex items-end justify-between mb-8 border-b-4 border-black pb-4">
-          <h2 className="font-display text-5xl uppercase drop-shadow-[2px_2px_0_hsl(48_100%_50%)]">Hot Drops</h2>
+          <h2 className="font-display text-5xl uppercase text-white [text-shadow:_-3px_-3px_0_#000,_3px_-3px_0_#000,_-3px_3px_0_#000,_3px_3px_0_#000,_-3px_0px_0_#000,_3px_0px_0_#000,_0px_-3px_0_#000,_0px_3px_0_#000,_5px_5px_0_#000]">Hot Drops</h2>
           <Button variant="outline" asChild>
             <Link href="/shop">View All</Link>
           </Button>

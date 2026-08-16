@@ -74,13 +74,13 @@ export default function Appearances() {
                 {event.endDate && event.endDate !== event.date ? (
                   // Multi-day: Month / "16 – 22" or "30 – Sep 1" / Year
                   <>
-                    <span className="font-bold text-lg leading-none">
-                      {parseLocalDate(event.date).toLocaleDateString("en-US", { month: "short" })}
+                    <span className="font-display text-3xl leading-none">
+                      {parseLocalDate(event.date).toLocaleDateString("en-US", { month: "short" }).toUpperCase()}
                       {!isSameMonth(event.date, event.endDate) && (
-                        <> – {parseLocalDate(event.endDate).toLocaleDateString("en-US", { month: "short" })}</>
+                        <>–{parseLocalDate(event.endDate).toLocaleDateString("en-US", { month: "short" }).toUpperCase()}</>
                       )}
                     </span>
-                    <span className="font-display text-2xl leading-none mt-0.5">
+                    <span className="font-bold text-xl leading-none mt-1">
                       {parseLocalDate(event.date).getDate()}
                       {" – "}
                       {parseLocalDate(event.endDate).getDate()}

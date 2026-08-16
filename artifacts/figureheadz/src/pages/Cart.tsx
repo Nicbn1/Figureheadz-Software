@@ -61,7 +61,7 @@ export default function Cart() {
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-16">
-        <h1 className="font-display text-5xl uppercase mb-8">Your Stash</h1>
+        <h1 className="font-display text-5xl uppercase mb-8 text-white [text-shadow:_-3px_-3px_0_#000,_3px_-3px_0_#000,_-3px_3px_0_#000,_3px_3px_0_#000,_-3px_0px_0_#000,_3px_0px_0_#000,_0px_-3px_0_#000,_0px_3px_0_#000,_5px_5px_0_#000]">Your Stash</h1>
         <div className="bg-muted h-64 animate-pulse comic-border"></div>
       </div>
     );
@@ -81,7 +81,7 @@ export default function Cart() {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <h1 className="font-display text-6xl uppercase mb-8 drop-shadow-[2px_2px_0_hsl(48_100%_50%)]">Your Stash</h1>
+      <h1 className="font-display text-6xl uppercase mb-8 text-white [text-shadow:_-3px_-3px_0_#000,_3px_-3px_0_#000,_-3px_3px_0_#000,_3px_3px_0_#000,_-3px_0px_0_#000,_3px_0px_0_#000,_0px_-3px_0_#000,_0px_3px_0_#000,_5px_5px_0_#000]">Your Stash</h1>
       
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="flex-1 space-y-4">

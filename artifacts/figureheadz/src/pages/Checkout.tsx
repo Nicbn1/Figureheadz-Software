@@ -147,8 +147,8 @@ export default function Checkout() {
 
           {/* Body */}
           <div className="p-6 flex gap-5 items-start">
-            <div className="w-24 h-24 shrink-0 bg-muted comic-border flex items-center justify-center text-4xl">
-              🧊
+            <div className="w-24 h-24 shrink-0 bg-white comic-border overflow-hidden">
+              <img src={`${import.meta.env.BASE_URL}products/4-inch-protector.jpg`} alt="4 inch protector" className="w-full h-full object-cover" />
             </div>
             <div>
               <p className="font-display text-xl uppercase mb-1">4" Protectors</p>

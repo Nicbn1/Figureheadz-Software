@@ -6,12 +6,15 @@ import { z } from "zod";
 import { useUser, Show } from "@clerk/react";
 import { useCart, useCartId } from "@/lib/cart";
 import { estimateShippingCents, estimateTaxCents, getDestinationTaxRate } from "@/lib/pricing";
-import { useCreateOrder } from "@workspace/api-client-react";
+import { useCreateOrder, useAddCartItem } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
+
+// 4" Protectors upsell — variation ID is stable (seeded product)
+const PROTECTORS_VARIATION_ID = 96;
 
 const checkoutSchema = z.object({
   email: z.string().email("Enter a valid email address"),
@@ -31,11 +34,25 @@ export default function Checkout() {
   const { cartId, clearCart } = useCartId();
   const [, setLocation] = useLocation();
   const createOrder = useCreateOrder();
+  const addItem = useAddCartItem();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { user, isSignedIn, isLoaded: userLoaded } = useUser();
   const [checkingOutAsGuest, setCheckingOutAsGuest] = useState(false);
+  const [upsellDismissed, setUpsellDismissed] = useState(false);
   const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+  const handleAddProtectors = async () => {
+    if (!cartId) { setUpsellDismissed(true); return; }
+    try {
+      await addItem.mutateAsync({ cartId, data: { variationId: PROTECTORS_VARIATION_ID, quantity: 1 } });
+      queryClient.invalidateQueries({ queryKey: ["/api/cart", cartId] });
+      toast({ title: "Added!", description: '4" Protectors added to your order.' });
+    } catch {
+      toast({ variant: "destructive", title: "Oops!", description: "Couldn't add protectors. Try again." });
+    }
+    setUpsellDismissed(true);
+  };
 
   const form = useForm<CheckoutValues>({
     resolver: zodResolver(checkoutSchema),
@@ -114,6 +131,55 @@ export default function Checkout() {
   };
 
   if (loadingCart) return <div className="p-8 text-center font-display text-2xl">Loading...</div>;
+
+  // Upsell modal — shown before billing form when cart has items
+  if (cart && cart.items.length > 0 && !upsellDismissed) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+        <div className="bg-white comic-border shadow-[12px_12px_0_#000] w-full max-w-md overflow-hidden">
+          {/* Header */}
+          <div className="bg-secondary border-b-4 border-black px-6 py-4">
+            <p className="font-display text-sm uppercase tracking-widest text-black">Before you check out...</p>
+            <h2 className="font-display text-3xl uppercase text-white [text-shadow:_-2px_-2px_0_#000,_2px_-2px_0_#000,_-2px_2px_0_#000,_2px_2px_0_#000]">
+              Protect Your Pops!
+            </h2>
+          </div>
+
+          {/* Body */}
+          <div className="p-6 flex gap-5 items-start">
+            <div className="w-24 h-24 shrink-0 bg-muted comic-border flex items-center justify-center text-4xl">
+              🧊
+            </div>
+            <div>
+              <p className="font-display text-xl uppercase mb-1">4" Protectors</p>
+              <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
+                Keep your Funko Pops in mint condition with crystal-clear 4" soft plastic protectors. Pack of 25.
+              </p>
+              <p className="font-display text-2xl text-primary">$14.99</p>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="px-6 pb-6 flex flex-col gap-3">
+            <Button
+              size="lg"
+              className="w-full text-xl font-display uppercase"
+              onClick={handleAddProtectors}
+              disabled={addItem.isPending}
+            >
+              {addItem.isPending ? "Adding..." : "Yes, Add Protectors! — $14.99"}
+            </Button>
+            <button
+              onClick={() => setUpsellDismissed(true)}
+              className="text-sm text-muted-foreground underline hover:text-foreground transition-colors"
+            >
+              No thanks, continue to checkout
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!cart || cart.items.length === 0) {
     return (

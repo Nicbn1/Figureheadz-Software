@@ -83,7 +83,7 @@ export function ContactDialog() {
           type="button"
           size="lg"
           variant="outline"
-          className="bg-white text-black hover:bg-secondary"
+          className="bg-secondary text-black hover:bg-secondary/90"
         >
           Contact Us
         </Button>

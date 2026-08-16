@@ -83,7 +83,7 @@ export default function Home() {
 
       {/* Categories Grid */}
       <section className="container mx-auto px-4">
-        <h2 className="font-display text-5xl uppercase mb-8 drop-shadow-[2px_2px_0_hsl(48_100%_50%)] border-b-4 border-black pb-4">Browse The Stash</h2>
+        <h2 className="font-display text-5xl uppercase mb-8 border-b-4 border-black pb-4 text-white [text-shadow:_-3px_-3px_0_#000,_3px_-3px_0_#000,_-3px_3px_0_#000,_3px_3px_0_#000,_-3px_0px_0_#000,_3px_0px_0_#000,_0px_-3px_0_#000,_0px_3px_0_#000,_5px_5px_0_#000]">Browse The Stash</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Virtual Categories */}

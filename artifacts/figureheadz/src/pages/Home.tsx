@@ -129,7 +129,7 @@ export default function Home() {
 
       {/* Mailing List CTA */}
       <section className="container mx-auto px-4 mt-8">
-        <div className="bg-primary p-8 md:p-16 comic-border comic-shadow relative overflow-hidden">
+        <div className="bg-primary halftone-blue p-8 md:p-16 comic-border comic-shadow relative overflow-hidden">
           <div className="absolute inset-0 halftone-bg opacity-20"></div>
           <div className="relative z-10 flex flex-col items-center text-center gap-6 max-w-3xl mx-auto">
             <div>

@@ -118,7 +118,7 @@ export default function Checkout() {
   if (!cart || cart.items.length === 0) {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
-        <h1 className="font-display text-4xl mb-6">Your cart is empty!</h1>
+        <h1 className="font-display text-4xl mb-6 text-white [text-shadow:_-3px_-3px_0_#000,_3px_-3px_0_#000,_-3px_3px_0_#000,_3px_3px_0_#000,_-3px_0px_0_#000,_3px_0px_0_#000,_0px_-3px_0_#000,_0px_3px_0_#000,_5px_5px_0_#000]">Your cart is empty!</h1>
         <Button asChild><Link href="/shop">Shop Now</Link></Button>
       </div>
     );

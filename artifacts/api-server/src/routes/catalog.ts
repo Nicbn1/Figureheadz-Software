@@ -100,9 +100,7 @@ router.get("/products", async (req, res): Promise<void> => {
   const shaped = rows.map((r) => ({ ...r.product, categoryName: r.categoryName }));
   const withStock = await withVariations(shaped);
 
-  const filtered = inStockOnly
-    ? withStock.filter((p) => p.totalStock > 0)
-    : withStock;
+  const filtered = withStock.filter((p) => p.totalStock > 0);
 
   res.json(ListProductsResponse.parse(filtered));
 });
@@ -117,7 +115,8 @@ router.get("/products/featured", async (_req, res): Promise<void> => {
     .limit(8);
 
   const shaped = rows.map((r) => ({ ...r.product, categoryName: r.categoryName }));
-  res.json(ListFeaturedProductsResponse.parse(await withVariations(shaped)));
+  const withStock = await withVariations(shaped);
+  res.json(ListFeaturedProductsResponse.parse(withStock.filter((p) => p.totalStock > 0)));
 });
 
 router.get("/products/:slug", async (req, res): Promise<void> => {

@@ -6,6 +6,7 @@ export const appearancesTable = pgTable("appearances", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   date: text("date").notNull(), // ISO date string: YYYY-MM-DD
+  endDate: text("end_date"), // ISO date string: YYYY-MM-DD (optional, for multi-day events)
   location: text("location").notNull(),
   description: text("description"),
   link: text("link"),

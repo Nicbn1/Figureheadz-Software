@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 const categoryThemes = [
   { bg: "bg-primary", text: "text-white", shadow: "drop-shadow-[2px_2px_0_#000]" },
   { bg: "bg-destructive", text: "text-white", shadow: "drop-shadow-[2px_2px_0_#000]" },
-  { bg: "bg-secondary", text: "text-black", shadow: "drop-shadow-[2px_2px_0_#fff]" },
+  { bg: "bg-secondary", text: "text-white", shadow: "[text-shadow:_-3px_-3px_0_#000,_3px_-3px_0_#000,_-3px_3px_0_#000,_3px_3px_0_#000,_-3px_0px_0_#000,_3px_0px_0_#000,_0px_-3px_0_#000,_0px_3px_0_#000,_5px_5px_0_#000]" },
   { bg: "bg-primary", text: "text-white", shadow: "drop-shadow-[2px_2px_0_#000]" },
 ];
 
@@ -96,7 +96,7 @@ export default function Home() {
 
           <Link href="/shop?isOnSale=true" className="group relative bg-secondary p-8 comic-border comic-shadow flex items-center justify-center min-h-[200px] overflow-hidden">
             <div className="absolute inset-0 halftone-bg opacity-30"></div>
-            <h3 className="relative z-10 font-display text-4xl text-black uppercase drop-shadow-[2px_2px_0_#fff] transform group-hover:scale-110 transition-transform">
+            <h3 className="relative z-10 font-display text-4xl text-white uppercase [text-shadow:_-3px_-3px_0_#000,_3px_-3px_0_#000,_-3px_3px_0_#000,_3px_3px_0_#000,_-3px_0px_0_#000,_3px_0px_0_#000,_0px_-3px_0_#000,_0px_3px_0_#000,_5px_5px_0_#000] transform group-hover:scale-110 transition-transform">
               On Sale
             </h3>
           </Link>

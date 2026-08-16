@@ -2,16 +2,30 @@ import { CalendarDays, MapPin, ExternalLink, Ticket } from "lucide-react";
 import { useListAppearances } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 
-function formatDate(dateStr: string) {
-  // dateStr is YYYY-MM-DD — parse as local date to avoid timezone shifts
+function parseLocalDate(dateStr: string) {
   const [year, month, day] = dateStr.split("-").map(Number);
-  const d = new Date(year, month - 1, day);
-  return d.toLocaleDateString("en-US", {
+  return new Date(year, month - 1, day);
+}
+
+function formatDate(dateStr: string) {
+  return parseLocalDate(dateStr).toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
   });
+}
+
+function formatShortDate(dateStr: string, includeMonth = true) {
+  const d = parseLocalDate(dateStr);
+  if (includeMonth) {
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  }
+  return d.toLocaleDateString("en-US", { day: "numeric" });
+}
+
+function isSameMonth(a: string, b: string) {
+  return a.slice(0, 7) === b.slice(0, 7);
 }
 
 export default function Appearances() {
@@ -57,19 +71,36 @@ export default function Appearances() {
             >
               {/* Date badge */}
               <div className="shrink-0 flex flex-col items-center justify-center bg-primary text-white comic-border px-6 py-4 min-w-[90px]">
-                <span className="font-display text-3xl leading-none">
-                  {formatDate(event.date).split(",")[0].trim().slice(0, 3).toUpperCase()}
-                </span>
-                <span className="font-bold text-xl leading-none mt-1">
-                  {new Date(
-                    Number(event.date.split("-")[0]),
-                    Number(event.date.split("-")[1]) - 1,
-                    Number(event.date.split("-")[2])
-                  ).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                </span>
-                <span className="text-sm opacity-80 mt-1">
-                  {event.date.split("-")[0]}
-                </span>
+                {event.endDate && event.endDate !== event.date ? (
+                  // Multi-day: show "Aug 16 – 18" or "Aug 30 – Sep 1"
+                  <>
+                    <span className="font-bold text-lg leading-none">
+                      {formatShortDate(event.date)}
+                    </span>
+                    <span className="text-base leading-none my-0.5 opacity-80">–</span>
+                    <span className="font-bold text-lg leading-none">
+                      {isSameMonth(event.date, event.endDate)
+                        ? formatShortDate(event.endDate, false)
+                        : formatShortDate(event.endDate)}
+                    </span>
+                    <span className="text-sm opacity-80 mt-1">
+                      {event.date.split("-")[0]}
+                    </span>
+                  </>
+                ) : (
+                  // Single day: show day-of-week, "Aug 16", year
+                  <>
+                    <span className="font-display text-3xl leading-none">
+                      {formatDate(event.date).split(",")[0].trim().slice(0, 3).toUpperCase()}
+                    </span>
+                    <span className="font-bold text-xl leading-none mt-1">
+                      {formatShortDate(event.date)}
+                    </span>
+                    <span className="text-sm opacity-80 mt-1">
+                      {event.date.split("-")[0]}
+                    </span>
+                  </>
+                )}
               </div>
 
               {/* Details */}

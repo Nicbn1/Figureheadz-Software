@@ -133,7 +133,7 @@ export default function Home() {
           <div className="absolute inset-0 halftone-bg opacity-20"></div>
           <div className="relative z-10 flex flex-col items-center text-center gap-6 max-w-3xl mx-auto">
             <div>
-              <h2 className="font-display text-5xl md:text-6xl uppercase mb-4 drop-shadow-[2px_2px_0_#fff]">Don't Miss Out!</h2>
+              <h2 className="font-display text-5xl md:text-6xl uppercase mb-4 text-white [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000]">Don't Miss Out!</h2>
               <p className="text-xl font-medium">Join the Figureheadz transmission. Get alerts on new drops, exclusive variants, and secret sales.</p>
             </div>
             <form className="w-full flex flex-col sm:flex-row gap-4 items-stretch justify-center" onSubmit={handleSubscribe}>

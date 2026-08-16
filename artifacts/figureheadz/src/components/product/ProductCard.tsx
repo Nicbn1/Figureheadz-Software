@@ -5,7 +5,7 @@ export function ProductCard({ product }: { product: Product }) {
   const imageUrl = `${import.meta.env.BASE_URL}${product.images[0]}`;
   
   return (
-    <Link href={`/product/${product.slug}`} className="group block relative">
+    <Link href={`/product/${product.slug}`} className="group block relative h-full">
       <div className="bg-white comic-border comic-shadow rounded-none overflow-hidden h-full flex flex-col relative group-hover:border-primary transition-colors">
         
         {/* Badges */}
@@ -21,8 +21,8 @@ export function ProductCard({ product }: { product: Product }) {
           )}
         </div>
 
-        {/* Image */}
-        <div className="aspect-square bg-gray-100 p-6 flex items-center justify-center border-b-2 border-black relative overflow-hidden halftone-bg">
+        {/* Image — fixed height so all cards are uniform regardless of image dimensions */}
+        <div className="h-56 bg-gray-100 p-6 flex items-center justify-center border-b-2 border-black relative overflow-hidden halftone-bg shrink-0">
           <img 
             src={imageUrl} 
             alt={product.name} 

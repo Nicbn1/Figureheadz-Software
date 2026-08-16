@@ -28,8 +28,7 @@ export default function Appearances() {
           Upcoming Appearances
         </h1>
         <p className="text-muted-foreground text-lg max-w-md mx-auto">
-          Catch us in person at conventions, pop-ups, and signing events near
-          you!
+          Catch us in person at Conventions and Card Show events near you!
         </p>
       </div>
 

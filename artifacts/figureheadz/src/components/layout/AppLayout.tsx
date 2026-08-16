@@ -17,7 +17,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         <div className="absolute top-1/2 left-1/4 w-20 h-20 bg-white rounded-full mix-blend-overlay opacity-20 animate-pulse [animation-delay:1s]"></div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="font-display text-4xl mb-4 uppercase text-white drop-shadow-[2px_2px_0_#000]">Figureheadz</h2>
-          <p className="text-lg font-medium mb-6 text-white drop-shadow-[1px_1px_0_#000]">Collectibles with Pop-Art Energy.</p>
+          <p className="text-lg font-medium mb-6 text-white drop-shadow-[1px_1px_0_#000]">For all of your collectible needs</p>
           <div className="flex flex-wrap justify-center items-center gap-6 font-display text-xl mb-6">
             <Link href="/shop" className="text-white drop-shadow-[2px_2px_0_#000] hover:text-secondary underline">Shop</Link>
             <Link href="/orders" className="text-white drop-shadow-[2px_2px_0_#000] hover:text-secondary underline">Track Order</Link>

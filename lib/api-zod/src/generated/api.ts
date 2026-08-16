@@ -487,6 +487,7 @@ export const ListAppearancesResponseItem = zod.object({
   "id": zod.number(),
   "name": zod.string(),
   "date": zod.string().describe('ISO date string (YYYY-MM-DD)'),
+  "endDate": zod.string().nullish().describe('ISO date string (YYYY-MM-DD) — last day of multi-day event'),
   "location": zod.string(),
   "description": zod.string().nullish(),
   "link": zod.string().nullish(),
@@ -502,6 +503,7 @@ export const AdminListAppearancesResponseItem = zod.object({
   "id": zod.number(),
   "name": zod.string(),
   "date": zod.string().describe('ISO date string (YYYY-MM-DD)'),
+  "endDate": zod.string().nullish().describe('ISO date string (YYYY-MM-DD) — last day of multi-day event'),
   "location": zod.string(),
   "description": zod.string().nullish(),
   "link": zod.string().nullish(),
@@ -516,6 +518,7 @@ export const AdminListAppearancesResponse = zod.array(AdminListAppearancesRespon
 export const CreateAppearanceBody = zod.object({
   "name": zod.string(),
   "date": zod.string().describe('ISO date string (YYYY-MM-DD)'),
+  "endDate": zod.string().nullish().describe('ISO date string (YYYY-MM-DD) — last day of multi-day event'),
   "location": zod.string(),
   "description": zod.string().nullish(),
   "link": zod.string().nullish()
@@ -525,6 +528,7 @@ export const CreateAppearanceResponse = zod.object({
   "id": zod.number(),
   "name": zod.string(),
   "date": zod.string().describe('ISO date string (YYYY-MM-DD)'),
+  "endDate": zod.string().nullish().describe('ISO date string (YYYY-MM-DD) — last day of multi-day event'),
   "location": zod.string(),
   "description": zod.string().nullish(),
   "link": zod.string().nullish(),
@@ -542,6 +546,7 @@ export const UpdateAppearanceParams = zod.object({
 export const UpdateAppearanceBody = zod.object({
   "name": zod.string(),
   "date": zod.string().describe('ISO date string (YYYY-MM-DD)'),
+  "endDate": zod.string().nullish().describe('ISO date string (YYYY-MM-DD) — last day of multi-day event'),
   "location": zod.string(),
   "description": zod.string().nullish(),
   "link": zod.string().nullish()
@@ -551,6 +556,7 @@ export const UpdateAppearanceResponse = zod.object({
   "id": zod.number(),
   "name": zod.string(),
   "date": zod.string().describe('ISO date string (YYYY-MM-DD)'),
+  "endDate": zod.string().nullish().describe('ISO date string (YYYY-MM-DD) — last day of multi-day event'),
   "location": zod.string(),
   "description": zod.string().nullish(),
   "link": zod.string().nullish(),

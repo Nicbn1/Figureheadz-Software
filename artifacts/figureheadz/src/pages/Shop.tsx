@@ -81,7 +81,7 @@ export default function Shop() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4 border-b-4 border-black pb-4">
         <div>
-          <h1 className="font-display text-6xl uppercase text-white [text-shadow:_-2px_-2px_0_#000,_2px_-2px_0_#000,_-2px_2px_0_#000,_2px_2px_0_#000,_3px_3px_0_#000]">The Catalog</h1>
+          <h1 className="font-display text-6xl uppercase text-white [text-shadow:_-2px_-2px_0_#000,_2px_-2px_0_#000,_-2px_2px_0_#000,_2px_2px_0_#000,_3px_3px_0_#000]">Shop</h1>
           {search && <p className="text-xl font-bold mt-2">Showing results for "{search}"</p>}
         </div>
         

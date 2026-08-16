@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { eq, gte } from "drizzle-orm";
+import { eq, gte, sql } from "drizzle-orm";
 import { db, appearancesTable } from "@workspace/db";
 import { requireAdmin } from "../lib/admin-auth";
 import { CreateAppearanceBody, UpdateAppearanceBody } from "@workspace/api-zod";
@@ -7,12 +7,13 @@ import { CreateAppearanceBody, UpdateAppearanceBody } from "@workspace/api-zod";
 const router: IRouter = Router();
 
 // Public: list upcoming appearances (today and future, sorted by date)
+// For multi-day events, uses end_date so they stay visible through their last day
 router.get("/appearances", async (_req, res): Promise<void> => {
   const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
   const rows = await db
     .select()
     .from(appearancesTable)
-    .where(gte(appearancesTable.date, today))
+    .where(gte(sql`COALESCE(${appearancesTable.endDate}, ${appearancesTable.date})`, today))
     .orderBy(appearancesTable.date);
   res.json(rows);
 });
@@ -39,6 +40,7 @@ router.post("/admin/appearances", requireAdmin, async (req, res): Promise<void> 
     .values({
       name: body.data.name,
       date: body.data.date,
+      endDate: body.data.endDate ?? null,
       location: body.data.location,
       description: body.data.description ?? null,
       link: body.data.link ?? null,
@@ -67,6 +69,7 @@ router.put("/admin/appearances/:id", requireAdmin, async (req, res): Promise<voi
     .set({
       name: body.data.name,
       date: body.data.date,
+      endDate: body.data.endDate ?? null,
       location: body.data.location,
       description: body.data.description ?? null,
       link: body.data.link ?? null,

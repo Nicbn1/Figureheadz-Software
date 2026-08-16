@@ -19,7 +19,7 @@ export const clerkAppearance = {
     colorInput: '#ffffff',
     colorInputForeground: '#000000',
     colorNeutral: '#000000',
-    fontFamily: "'Space Grotesk', sans-serif",
+    fontFamily: "'Boogaloo', cursive",
     borderRadius: '0px',
   },
   elements: {

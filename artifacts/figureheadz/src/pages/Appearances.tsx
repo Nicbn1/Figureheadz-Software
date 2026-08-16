@@ -24,7 +24,7 @@ export default function Appearances() {
         <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 comic-border mb-6">
           <CalendarDays className="h-10 w-10 text-primary" />
         </div>
-        <h1 className="font-display text-5xl uppercase mb-4 drop-shadow-[3px_3px_0_#000]">
+        <h1 className="font-display text-5xl uppercase mb-4 text-white [text-shadow:_-2px_-2px_0_#000,_2px_-2px_0_#000,_-2px_2px_0_#000,_2px_2px_0_#000,_3px_3px_0_#000]">
           Upcoming Appearances
         </h1>
         <p className="text-muted-foreground text-lg max-w-md mx-auto">

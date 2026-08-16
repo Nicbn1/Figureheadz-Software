@@ -70,7 +70,7 @@ export default function Cart() {
   if (!cart || cart.items.length === 0) {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
-        <h1 className="font-display text-6xl uppercase mb-6 drop-shadow-[2px_2px_0_hsl(48_100%_50%)]">Your Cart is Empty!</h1>
+        <h1 className="font-display text-6xl uppercase mb-6 text-white [text-shadow:_-3px_-3px_0_#000,_3px_-3px_0_#000,_-3px_3px_0_#000,_3px_3px_0_#000,_-3px_0px_0_#000,_3px_0px_0_#000,_0px_-3px_0_#000,_0px_3px_0_#000,_5px_5px_0_#000]">Your Cart is Empty!</h1>
         <p className="text-2xl font-medium mb-8">Don't leave empty-handed. There's a multiverse to explore.</p>
         <Button size="lg" asChild>
           <Link href="/shop">BACK TO SHOP</Link>

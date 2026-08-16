@@ -14,7 +14,6 @@ export default function Shop() {
   const categorySlug = searchParams.get("categorySlug") || undefined;
   const franchise = searchParams.get("franchise") || undefined;
   const search = searchParams.get("search") || undefined;
-  const inStockOnly = searchParams.get("inStockOnly") === "true";
   const isOnSale = searchParams.get("isOnSale") === "true";
   const isExclusive = searchParams.get("isExclusive") === "true";
   const sort = (searchParams.get("sort") as ListProductsSort) || "newest";
@@ -26,7 +25,6 @@ export default function Shop() {
     categorySlug,
     franchise,
     search,
-    inStockOnly: inStockOnly ? true : undefined,
     sort,
   });
 
@@ -75,7 +73,7 @@ export default function Shop() {
     updateFilters({ search: searchInput || null });
   };
 
-  const activeFilterCount = [categorySlug, franchise, inStockOnly, isOnSale, isExclusive, search].filter(Boolean).length;
+  const activeFilterCount = [categorySlug, franchise, isOnSale, isExclusive, search].filter(Boolean).length;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -159,15 +157,6 @@ export default function Shop() {
                   className="w-5 h-5 comic-border accent-primary cursor-pointer" 
                 />
                 <span className="font-medium group-hover:text-primary transition-colors">Exclusives</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer group">
-                <input 
-                  type="checkbox" 
-                  checked={inStockOnly} 
-                  onChange={(e) => updateFilters({ inStockOnly: e.target.checked ? "true" : null })}
-                  className="w-5 h-5 comic-border accent-primary cursor-pointer" 
-                />
-                <span className="font-medium group-hover:text-primary transition-colors">In Stock Only</span>
               </label>
             </div>
 

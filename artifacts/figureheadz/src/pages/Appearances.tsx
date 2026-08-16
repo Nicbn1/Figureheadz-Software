@@ -72,16 +72,18 @@ export default function Appearances() {
               {/* Date badge */}
               <div className="shrink-0 flex flex-col items-center justify-center bg-primary text-white comic-border px-6 py-4 min-w-[90px]">
                 {event.endDate && event.endDate !== event.date ? (
-                  // Multi-day: show "Aug 16 – 18" or "Aug 30 – Sep 1"
+                  // Multi-day: Month / "16 – 22" or "30 – Sep 1" / Year
                   <>
                     <span className="font-bold text-lg leading-none">
-                      {formatShortDate(event.date)}
+                      {parseLocalDate(event.date).toLocaleDateString("en-US", { month: "short" })}
+                      {!isSameMonth(event.date, event.endDate) && (
+                        <> – {parseLocalDate(event.endDate).toLocaleDateString("en-US", { month: "short" })}</>
+                      )}
                     </span>
-                    <span className="text-base leading-none my-0.5 opacity-80">–</span>
-                    <span className="font-bold text-lg leading-none">
-                      {isSameMonth(event.date, event.endDate)
-                        ? formatShortDate(event.endDate, false)
-                        : formatShortDate(event.endDate)}
+                    <span className="font-display text-2xl leading-none mt-0.5">
+                      {parseLocalDate(event.date).getDate()}
+                      {" – "}
+                      {parseLocalDate(event.endDate).getDate()}
                     </span>
                     <span className="text-sm opacity-80 mt-1">
                       {event.date.split("-")[0]}

@@ -11,6 +11,8 @@ export interface Appearance {
   name: string;
   /** ISO date string (YYYY-MM-DD) */
   date: string;
+  /** ISO date string (YYYY-MM-DD) — last day of a multi-day event, optional */
+  endDate?: string | null;
   location: string;
   /** @nullable */
   description?: string | null;

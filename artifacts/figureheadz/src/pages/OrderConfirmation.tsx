@@ -21,7 +21,7 @@ export default function OrderConfirmation() {
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-3xl">
-      <div className="bg-primary halftone-blue p-8 md:p-12 comic-border shadow-[12px_12px_0_#000] relative overflow-hidden">
+      <div className="bg-sky-400 p-8 md:p-12 comic-border shadow-[12px_12px_0_#000] relative overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-secondary opacity-30 rounded-bl-full pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-secondary opacity-20 rounded-tr-full pointer-events-none"></div>
 

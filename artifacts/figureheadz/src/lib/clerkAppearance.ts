@@ -46,5 +46,6 @@ export const clerkAppearance = {
     main: '',
     logoBox: 'mb-2',
     logoImage: 'h-16 w-16',
+    badge: '!hidden',
   },
 };

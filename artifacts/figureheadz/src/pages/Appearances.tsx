@@ -112,7 +112,14 @@ export default function Appearances() {
                 </h2>
                 <div className="flex items-center gap-2 text-muted-foreground font-medium mb-3">
                   <MapPin className="h-4 w-4 shrink-0" />
-                  <span>{event.location}</span>
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-primary hover:underline transition-colors"
+                  >
+                    {event.location}
+                  </a>
                 </div>
                 {event.description && (
                   <p className="text-sm text-foreground/80 mb-4 leading-relaxed">

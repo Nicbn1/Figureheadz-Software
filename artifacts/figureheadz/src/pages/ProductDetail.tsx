@@ -191,12 +191,12 @@ export default function ProductDetail() {
           <div className="flex items-center gap-4 mt-auto p-6 bg-muted comic-border">
             <div className="flex items-center comic-border bg-white h-16">
               <button 
-                className="w-12 h-full flex items-center justify-center font-display text-2xl bg-secondary hover:bg-secondary/80 border-r-2 border-black"
+                className={`w-12 h-full flex items-center justify-center font-display text-2xl border-r-2 border-black ${quantity <= 1 ? 'bg-white cursor-not-allowed' : 'bg-secondary hover:bg-secondary/80'}`}
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
               >-</button>
               <div className="w-16 h-full flex items-center justify-center font-bold text-xl">{quantity}</div>
               <button 
-                className="w-12 h-full flex items-center justify-center font-display text-2xl bg-secondary hover:bg-secondary/80 border-l-2 border-black"
+                className={`w-12 h-full flex items-center justify-center font-display text-2xl border-l-2 border-black ${quantity >= (selectedVariation?.stockQuantity || 1) ? 'bg-white cursor-not-allowed' : 'bg-secondary hover:bg-secondary/80'}`}
                 onClick={() => setQuantity(Math.min(selectedVariation?.stockQuantity || 1, quantity + 1))}
               >+</button>
             </div>

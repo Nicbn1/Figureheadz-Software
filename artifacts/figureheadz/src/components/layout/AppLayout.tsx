@@ -21,7 +21,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="flex flex-wrap justify-center items-center gap-6 font-display text-xl mb-6">
             <Link href="/shop" className="text-white drop-shadow-[2px_2px_0_#000] hover:text-secondary underline">Shop</Link>
             <Link href="/orders" className="text-white drop-shadow-[2px_2px_0_#000] hover:text-secondary underline">Track Order</Link>
-            <Link href="/admin/login" className="text-white drop-shadow-[2px_2px_0_#000] hover:text-secondary underline">Admin</Link>
           </div>
           <ContactDialog />
 

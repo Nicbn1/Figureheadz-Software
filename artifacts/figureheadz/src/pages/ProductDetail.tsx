@@ -216,7 +216,7 @@ export default function ProductDetail() {
       {/* Related Products */}
       {relatedProducts && relatedProducts.length > 0 && (
         <section className="mt-20 border-t-4 border-black pt-12">
-          <h2 className="font-display text-4xl uppercase mb-8 drop-shadow-[2px_2px_0_hsl(48_100%_50%)]">More from {product.franchise}</h2>
+          <h2 className="font-display text-4xl uppercase mb-8 text-white [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000]">More from {product.franchise}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             {relatedProducts.slice(0, 4).map(related => (
               <ProductCard key={related.id} product={related} />

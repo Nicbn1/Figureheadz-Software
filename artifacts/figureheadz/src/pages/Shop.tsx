@@ -89,7 +89,7 @@ export default function Shop() {
               placeholder="Search..." 
               value={searchInput} 
               onChange={e => setSearchInput(e.target.value)} 
-              className="h-12"
+              className="h-12 bg-white"
             />
           </form>
           <Button 

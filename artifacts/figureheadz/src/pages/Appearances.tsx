@@ -74,31 +74,31 @@ export default function Appearances() {
                 {event.endDate && event.endDate !== event.date ? (
                   // Multi-day: Month / "16 – 22" or "30 – Sep 1" / Year
                   <>
-                    <span className="font-display text-3xl leading-none">
+                    <span className="font-display text-3xl leading-none [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]">
                       {parseLocalDate(event.date).toLocaleDateString("en-US", { month: "short" }).toUpperCase()}
                       {!isSameMonth(event.date, event.endDate) && (
                         <>–{parseLocalDate(event.endDate).toLocaleDateString("en-US", { month: "short" }).toUpperCase()}</>
                       )}
                     </span>
-                    <span className="font-bold text-xl leading-none mt-1">
+                    <span className="font-bold text-xl leading-none mt-1 [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]">
                       {parseLocalDate(event.date).getDate()}
                       {" – "}
                       {parseLocalDate(event.endDate).getDate()}
                     </span>
-                    <span className="text-sm opacity-80 mt-1">
+                    <span className="text-sm opacity-80 mt-1 [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]">
                       {event.date.split("-")[0]}
                     </span>
                   </>
                 ) : (
                   // Single day: show day-of-week, "Aug 16", year
                   <>
-                    <span className="font-display text-3xl leading-none">
+                    <span className="font-display text-3xl leading-none [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]">
                       {formatDate(event.date).split(",")[0].trim().slice(0, 3).toUpperCase()}
                     </span>
-                    <span className="font-bold text-xl leading-none mt-1">
+                    <span className="font-bold text-xl leading-none mt-1 [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]">
                       {formatShortDate(event.date)}
                     </span>
-                    <span className="text-sm opacity-80 mt-1">
+                    <span className="text-sm opacity-80 mt-1 [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]">
                       {event.date.split("-")[0]}
                     </span>
                   </>

@@ -150,7 +150,7 @@ export default function ProductDetail() {
                 </span>
               </div>
             ) : (
-              <span className="font-display text-5xl text-white [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000]">${(priceToDisplay / 100).toFixed(2)}</span>
+              <span className="font-display text-5xl tracking-widest text-white [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000]">${(priceToDisplay / 100).toFixed(2)}</span>
             )}
             
             <div className="ml-auto">

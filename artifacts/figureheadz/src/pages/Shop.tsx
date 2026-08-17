@@ -98,7 +98,7 @@ export default function Shop() {
             className="md:hidden shrink-0"
           >
             <Filter className="mr-2 h-5 w-5" />
-            Filters {activeFilterCount > 0 && `(${activeFilterCount})`}
+            <span className="text-white [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000]">Filters {activeFilterCount > 0 && `(${activeFilterCount})`}</span>
           </Button>
         </div>
       </div>
@@ -108,7 +108,7 @@ export default function Shop() {
         <aside className={`${showFilters ? 'block' : 'hidden'} md:block w-full md:w-64 shrink-0 space-y-8`}>
           <div className="bg-white p-6 comic-border comic-shadow">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-display text-2xl uppercase">Filters</h3>
+              <h3 className="font-display text-2xl uppercase text-white [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000]">Filters</h3>
               {activeFilterCount > 0 && (
                 <button 
                   onClick={() => setLocation("/shop")}

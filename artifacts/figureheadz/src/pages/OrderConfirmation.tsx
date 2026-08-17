@@ -32,7 +32,7 @@ export default function OrderConfirmation() {
           <h1 className="font-display text-5xl md:text-7xl uppercase text-white [text-shadow:-3px_-3px_0_#000,3px_-3px_0_#000,-3px_3px_0_#000,3px_3px_0_#000,-3px_0px_0_#000,3px_0px_0_#000,0px_-3px_0_#000,0px_3px_0_#000]">
             Order Secured
           </h1>
-          <p className="text-white/90 font-medium mt-4 text-xl drop-shadow-[1px_1px_0_#000]">
+          <p className="text-secondary font-bold mt-4 text-xl drop-shadow-[2px_2px_0_#000]">
             Transmission received. We're packing your stash.
           </p>
         </div>

@@ -131,3 +131,10 @@
   background-size: 8px 8px;
   background-color: hsl(213 100% 50%);
 }
+
+/* Hide Clerk "Last used" badge */
+.cl-badge,
+[data-localization-key="badge__lastUsed"],
+.cl-internal-b3fm57 {
+  display: none !important;
+}

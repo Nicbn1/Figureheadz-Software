@@ -70,7 +70,7 @@ export default function Orders() {
 
       {orders && orders.length > 0 && (
         <div className="space-y-8">
-          <h2 className="font-display text-3xl uppercase mb-6 border-b-4 border-black pb-2 text-white [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000]">Orders for {searchEmail}</h2>
+          <h2 className="font-display text-3xl uppercase tracking-widest mb-6 border-b-4 border-black pb-2 text-white [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000]">Orders for {searchEmail}</h2>
           
           {orders.map(order => (
             <div key={order.id} className="bg-white comic-border shadow-[4px_4px_0_#000] overflow-hidden flex flex-col sm:flex-row">

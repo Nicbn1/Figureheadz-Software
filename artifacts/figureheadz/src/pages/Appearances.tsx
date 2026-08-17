@@ -107,7 +107,7 @@ export default function Appearances() {
 
               {/* Details */}
               <div className="flex-1 min-w-0">
-                <h2 className="font-display text-2xl uppercase leading-tight mb-1">
+                <h2 className="font-display text-2xl uppercase leading-tight mb-1 text-white [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000]">
                   {event.name}
                 </h2>
                 <div className="flex items-center gap-2 text-muted-foreground font-medium mb-3">

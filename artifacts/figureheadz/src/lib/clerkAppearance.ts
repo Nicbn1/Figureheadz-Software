@@ -6,9 +6,7 @@ export const clerkAppearance = {
   theme: shadcn,
   cssLayerName: 'clerk',
   options: {
-    logoPlacement: 'inside' as const,
-    logoLinkUrl: basePath || '/',
-    logoImageUrl: `${window.location.origin}${basePath}/figureheadz-logo.jpeg`,
+    logoPlacement: 'none' as const,
   },
   variables: {
     colorPrimary: 'hsl(213 100% 50%)',

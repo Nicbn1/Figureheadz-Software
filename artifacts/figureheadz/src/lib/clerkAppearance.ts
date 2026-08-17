@@ -26,7 +26,7 @@ export const clerkAppearance = {
     card: '!shadow-none !border-0 !bg-transparent !rounded-none',
     footer: '!shadow-none !border-0 !bg-transparent !rounded-none',
     headerTitle: 'font-display text-6xl uppercase tracking-widest text-white [text-shadow:_-3px_-3px_0_#000,_3px_-3px_0_#000,_-3px_3px_0_#000,_3px_3px_0_#000,_-3px_0px_0_#000,_3px_0px_0_#000,_0px_-3px_0_#000,_0px_3px_0_#000,_5px_5px_0_#000]',
-    headerSubtitle: 'text-white/80 font-bold text-lg',
+    headerSubtitle: 'text-white font-bold text-lg',
     socialButtonsBlockButtonText: 'text-black font-bold',
     socialButtonsBlockButton: 'border-2 border-black bg-white hover:bg-gray-100',
     formFieldLabel: 'text-white font-bold uppercase text-xs tracking-wide',

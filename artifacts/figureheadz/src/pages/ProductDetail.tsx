@@ -144,7 +144,7 @@ export default function ProductDetail() {
           <div className="flex items-center gap-4 mb-6 pb-6 border-b-4 border-black">
             {product.isOnSale && product.salePriceCents ? (
               <div className="flex items-center gap-4">
-                <span className="font-display text-3xl line-through text-muted-foreground">${(product.priceCents / 100).toFixed(2)}</span>
+                <span className="font-display text-3xl line-through text-black">${(product.priceCents / 100).toFixed(2)}</span>
                 <span className="font-display text-5xl text-black">
                   ${(product.salePriceCents / 100).toFixed(2)}
                 </span>

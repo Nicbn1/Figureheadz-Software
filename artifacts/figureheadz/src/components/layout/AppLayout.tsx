@@ -24,7 +24,16 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
           <ContactDialog />
 
-          <div className="mt-8">
+          <div className="mt-8 mb-6">
+            <p className="text-white font-medium drop-shadow-[1px_1px_0_#000] text-sm">
+              You can also find us at{" "}
+              <span className="font-bold">Mill Street Marketplace</span>
+              <br />
+              located at 36 Mill St, Wethersfield, CT
+            </p>
+          </div>
+
+          <div className="mt-2">
             <p className="text-sm font-display uppercase tracking-wide text-white drop-shadow-[1px_1px_0_#000] mb-3">
               Follow Us On Social Media
             </p>

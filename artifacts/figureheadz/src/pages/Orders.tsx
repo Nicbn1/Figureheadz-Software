@@ -29,7 +29,7 @@ export default function Orders() {
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
-      <h1 className="font-display text-6xl uppercase mb-8 drop-shadow-[2px_2px_0_hsl(48_100%_50%)]">Track Orders</h1>
+      <h1 className="font-display text-6xl uppercase mb-8 text-white [text-shadow:-3px_-3px_0_#000,3px_-3px_0_#000,-3px_3px_0_#000,3px_3px_0_#000,-3px_0px_0_#000,3px_0px_0_#000,0px_-3px_0_#000,0px_3px_0_#000]">Track Orders</h1>
       
       <div className="bg-white p-8 comic-border shadow-[8px_8px_0_#000] mb-12">
         <h2 className="font-bold text-xl uppercase mb-4">Enter your email to find past transmissions</h2>

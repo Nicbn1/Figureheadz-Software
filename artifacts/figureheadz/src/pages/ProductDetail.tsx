@@ -145,12 +145,12 @@ export default function ProductDetail() {
             {product.isOnSale && product.salePriceCents ? (
               <div className="flex items-center gap-4">
                 <span className="font-display text-3xl line-through text-muted-foreground">${(product.priceCents / 100).toFixed(2)}</span>
-                <span className="font-display text-5xl tracking-widest text-white [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000]">
+                <span className="font-display text-5xl tracking-widest text-black">
                   ${(product.salePriceCents / 100).toFixed(2)}
                 </span>
               </div>
             ) : (
-              <span className="font-display text-5xl tracking-widest text-white [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000]">${(priceToDisplay / 100).toFixed(2)}</span>
+              <span className="font-display text-5xl tracking-widest text-black">${(priceToDisplay / 100).toFixed(2)}</span>
             )}
             
           </div>

@@ -153,11 +153,6 @@ export default function ProductDetail() {
               <span className="font-display text-5xl tracking-widest text-white [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000]">${(priceToDisplay / 100).toFixed(2)}</span>
             )}
             
-            <div className="ml-auto">
-              <span className={`font-bold px-3 py-1 comic-border ${selectedVariation?.stockQuantity && selectedVariation.stockQuantity > 0 ? 'bg-green-400' : 'bg-red-400 text-white'}`}>
-                {selectedVariation?.stockQuantity && selectedVariation.stockQuantity > 0 ? `${selectedVariation.stockQuantity} IN STOCK` : 'OUT OF STOCK'}
-              </span>
-            </div>
           </div>
 
           <div className="prose prose-lg mb-8 font-medium text-black">

@@ -28,7 +28,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="mt-8 mb-6 flex flex-col items-center gap-1">
             <Home className="h-7 w-7 text-white drop-shadow-[1px_1px_0_#000]" />
             <p className="text-white font-bold drop-shadow-[1px_1px_0_#000] text-sm">Mill Street Marketplace</p>
-            <p className="text-white/90 font-medium text-sm">36 Mill St, Wethersfield, CT</p>
+            <a
+              href="https://maps.google.com/?q=36+Mill+St,+Wethersfield,+CT"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/90 font-medium text-sm underline hover:text-white transition-colors"
+            >
+              36 Mill St, Wethersfield, CT
+            </a>
           </div>
 
           <div className="mt-2">

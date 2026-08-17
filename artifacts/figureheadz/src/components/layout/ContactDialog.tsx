@@ -90,7 +90,7 @@ export function ContactDialog() {
       </DialogTrigger>
       <DialogContent className="comic-border sm:rounded-none">
         <DialogHeader>
-          <DialogTitle className="font-display text-3xl uppercase text-slate-100 [text-shadow:-3px_-3px_0_#000,3px_-3px_0_#000,-3px_3px_0_#000,3px_3px_0_#000,-3px_0px_0_#000,3px_0px_0_#000,0px_-3px_0_#000,0px_3px_0_#000]">Get In Touch</DialogTitle>
+          <DialogTitle className="font-display text-3xl uppercase tracking-widest text-slate-100 [text-shadow:-3px_-3px_0_#000,3px_-3px_0_#000,-3px_3px_0_#000,3px_3px_0_#000,-3px_0px_0_#000,3px_0px_0_#000,0px_-3px_0_#000,0px_3px_0_#000]">Get In Touch</DialogTitle>
           <DialogDescription>
             Questions, order issues, or just want to say hi? Send us a message.
           </DialogDescription>

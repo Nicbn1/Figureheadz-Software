@@ -134,7 +134,7 @@ export default function Home() {
           <div className="relative z-10 flex flex-col items-center text-center gap-6 max-w-3xl mx-auto">
             <div>
               <h2 className="font-display text-5xl md:text-6xl uppercase mb-4 text-white [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000]">Don't Miss Out!</h2>
-              <p className="text-xl font-medium">Join the Figureheadz Family! Get alerts on new drops, upcoming appearances as well as the latest sales.</p>
+              <p className="text-xl font-medium text-white">Join the Figureheadz Family! Get alerts on new drops, upcoming appearances as well as the latest sales.</p>
             </div>
             <form className="w-full flex flex-col sm:flex-row gap-4 items-stretch justify-center" onSubmit={handleSubscribe}>
               <input

@@ -36,7 +36,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative bg-primary overflow-hidden border-b-4 border-black halftone-blue py-20 lg:py-32">
         <div className="container mx-auto px-4 relative z-10 flex flex-col items-center text-center">
-          <div className="inline-block bg-secondary text-black font-display text-2xl lg:text-4xl px-6 py-2 border-4 border-black transform -rotate-2 mb-6 shadow-[8px_8px_0_#000]">
+          <div className="inline-block bg-secondary font-display text-2xl lg:text-4xl px-6 py-2 border-4 border-black transform -rotate-2 mb-6 shadow-[8px_8px_0_#000] text-white [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000]">
             WELCOME TO FIGUREHEADZ!
           </div>
           <h1 className="font-display text-6xl lg:text-9xl text-white uppercase drop-shadow-[4px_4px_0_#000] mb-8 max-w-4xl leading-none">

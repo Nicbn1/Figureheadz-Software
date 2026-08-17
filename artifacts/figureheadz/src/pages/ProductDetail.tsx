@@ -139,7 +139,7 @@ export default function ProductDetail() {
         {/* Details */}
         <div className="w-full lg:w-1/2 flex flex-col">
           <p className="text-lg font-bold text-muted-foreground uppercase tracking-wider mb-2">{product.franchise}</p>
-          <h1 className="font-display text-5xl md:text-7xl leading-none uppercase drop-shadow-[2px_2px_0_hsl(48_100%_50%)] mb-6">{product.name}</h1>
+          <h1 className="font-display text-5xl md:text-7xl leading-none uppercase mb-6 text-white [text-shadow:-3px_-3px_0_#000,3px_-3px_0_#000,-3px_3px_0_#000,3px_3px_0_#000,-3px_0px_0_#000,3px_0px_0_#000,0px_-3px_0_#000,0px_3px_0_#000]">{product.name}</h1>
           
           <div className="flex items-center gap-4 mb-6 pb-6 border-b-4 border-black">
             {product.isOnSale && product.salePriceCents ? (

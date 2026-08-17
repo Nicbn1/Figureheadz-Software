@@ -11,7 +11,7 @@ export function ProductCard({ product }: { product: Product }) {
         {/* Badges */}
         <div className="absolute top-2 left-2 z-10 flex flex-col gap-2">
           {product.isNew && (
-            <span className="bg-secondary text-black border-2 border-black font-display px-3 py-1 uppercase transform -rotate-2 drop-shadow-[2px_2px_0_#000]">New!</span>
+            <span className="bg-secondary text-white border-2 border-black font-display px-3 py-1 uppercase transform -rotate-2 drop-shadow-[2px_2px_0_#000]">New!</span>
           )}
           {product.isExclusive && (
             <span className="bg-destructive text-white border-2 border-black font-display px-3 py-1 uppercase transform rotate-3 drop-shadow-[2px_2px_0_#000]">Exclusive</span>

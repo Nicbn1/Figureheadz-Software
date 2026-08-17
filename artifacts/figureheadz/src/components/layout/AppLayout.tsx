@@ -2,6 +2,7 @@ import { Header } from "./Header";
 import { Link } from "wouter";
 import { ContactDialog } from "./ContactDialog";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
+import { Home } from "lucide-react";
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -24,13 +25,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
           <ContactDialog />
 
-          <div className="mt-8 mb-6">
-            <p className="text-white font-medium drop-shadow-[1px_1px_0_#000] text-sm">
-              You can also find us at{" "}
-              <span className="font-bold">Mill Street Marketplace</span>
-              <br />
-              located at 36 Mill St, Wethersfield, CT
-            </p>
+          <div className="mt-8 mb-6 flex flex-col items-center gap-1">
+            <Home className="h-7 w-7 text-white drop-shadow-[1px_1px_0_#000]" />
+            <p className="text-white font-bold drop-shadow-[1px_1px_0_#000] text-sm">Mill Street Marketplace</p>
+            <p className="text-white/90 font-medium text-sm">36 Mill St, Wethersfield, CT</p>
           </div>
 
           <div className="mt-2">

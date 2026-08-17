@@ -40,7 +40,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
           <div className="mt-2">
             <p className="text-sm font-display uppercase tracking-wide text-white drop-shadow-[1px_1px_0_#000] mb-3">
-              Follow Us On Social Media
+              Follow Us On
             </p>
             <div className="flex justify-center gap-4">
               <a

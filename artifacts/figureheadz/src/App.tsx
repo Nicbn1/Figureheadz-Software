@@ -130,7 +130,7 @@ function ClerkProviderWithRoutes() {
       localization={{
         signIn: {
           start: {
-            title: 'Welcome Back',
+            title: 'Welcome Back!',
             subtitle: 'Sign in to track orders and check out faster',
           },
         },

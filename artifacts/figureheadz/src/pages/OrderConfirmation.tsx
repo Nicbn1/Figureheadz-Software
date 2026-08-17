@@ -98,7 +98,7 @@ export default function OrderConfirmation() {
 
         <div className="flex justify-between items-end border-t border-dashed border-gray-400 pt-4 mb-8">
           <span className="font-display text-3xl uppercase">Total</span>
-          <span className="font-display text-5xl text-destructive">${(order.totalCents / 100).toFixed(2)}</span>
+          <span className="font-display text-5xl text-black">${(order.totalCents / 100).toFixed(2)}</span>
         </div>
 
         <div className="bg-secondary/20 p-6 comic-border">

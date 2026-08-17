@@ -150,7 +150,7 @@ export default function ProductDetail() {
                 </span>
               </div>
             ) : (
-              <span className="font-display text-5xl text-black bg-white px-4 py-1 comic-border shadow-[4px_4px_0_#000]">${(priceToDisplay / 100).toFixed(2)}</span>
+              <span className="font-display text-5xl text-black">${(priceToDisplay / 100).toFixed(2)}</span>
             )}
             
             <div className="ml-auto">

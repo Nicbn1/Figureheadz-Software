@@ -26,7 +26,7 @@ export default function OrderConfirmation() {
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-sky-600 opacity-60 rounded-tr-full pointer-events-none"></div>
 
         <div className="text-center mb-10">
-          <div className="inline-block bg-secondary text-black font-display text-2xl px-6 py-2 comic-border transform -rotate-2 mb-4 shadow-[4px_4px_0_#000]">
+          <div className="inline-block bg-secondary font-display text-2xl px-6 py-2 comic-border transform -rotate-2 mb-4 shadow-[4px_4px_0_#000] text-white [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000]">
             SUCCESS!
           </div>
           <h1 className="font-display text-5xl md:text-7xl uppercase text-white [text-shadow:-3px_-3px_0_#000,3px_-3px_0_#000,-3px_3px_0_#000,3px_3px_0_#000,-3px_0px_0_#000,3px_0px_0_#000,0px_-3px_0_#000,0px_3px_0_#000]">

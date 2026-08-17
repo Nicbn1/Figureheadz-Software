@@ -21,17 +21,18 @@ export default function OrderConfirmation() {
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-3xl">
-      <div className="bg-white p-8 md:p-12 comic-border shadow-[12px_12px_0_#000] relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-secondary opacity-20 halftone-bg rounded-bl-full pointer-events-none"></div>
-        
+      <div className="bg-primary halftone-blue p-8 md:p-12 comic-border shadow-[12px_12px_0_#000] relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-secondary opacity-30 rounded-bl-full pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-secondary opacity-20 rounded-tr-full pointer-events-none"></div>
+
         <div className="text-center mb-10">
-          <div className="inline-block bg-primary text-white font-display text-2xl px-6 py-2 comic-border transform -rotate-2 mb-4 shadow-[4px_4px_0_#000]">
+          <div className="inline-block bg-secondary text-black font-display text-2xl px-6 py-2 comic-border transform -rotate-2 mb-4 shadow-[4px_4px_0_#000]">
             SUCCESS!
           </div>
-          <h1 className="font-display text-5xl md:text-7xl uppercase drop-shadow-[2px_2px_0_hsl(48_100%_50%)]">
+          <h1 className="font-display text-5xl md:text-7xl uppercase text-white [text-shadow:-3px_-3px_0_#000,3px_-3px_0_#000,-3px_3px_0_#000,3px_3px_0_#000,-3px_0px_0_#000,3px_0px_0_#000,0px_-3px_0_#000,0px_3px_0_#000]">
             Order Secured
           </h1>
-          <p className="text-xl font-medium mt-4">
+          <p className="text-white/90 font-medium mt-4 text-xl drop-shadow-[1px_1px_0_#000]">
             Transmission received. We're packing your stash.
           </p>
         </div>

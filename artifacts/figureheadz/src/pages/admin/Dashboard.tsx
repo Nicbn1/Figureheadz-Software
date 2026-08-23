@@ -37,6 +37,7 @@ import { useQueryClient } from "@tanstack/react-query";
 type AppearanceForm = {
   name: string;
   date: string;
+  endDate: string;
   location: string;
   description: string;
   link: string;
@@ -45,6 +46,7 @@ type AppearanceForm = {
 const EMPTY_FORM: AppearanceForm = {
   name: "",
   date: "",
+  endDate: "",
   location: "",
   description: "",
   link: "",
@@ -135,6 +137,7 @@ export default function AdminDashboard() {
     setForm({
       name: a.name,
       date: a.date,
+      endDate: a.endDate ?? "",
       location: a.location,
       description: a.description ?? "",
       link: a.link ?? "",
@@ -156,6 +159,7 @@ export default function AdminDashboard() {
     const payload = {
       name: form.name.trim(),
       date: form.date,
+      endDate: form.endDate.trim() || null,
       location: form.location.trim(),
       description: form.description.trim() || null,
       link: form.link.trim() || null,
@@ -374,6 +378,17 @@ export default function AdminDashboard() {
                   </div>
 
                   <div>
+                    <label className="block text-xs font-bold uppercase mb-1">End Date <span className="normal-case font-normal">(optional, multi-day)</span></label>
+                    <input
+                      type="date"
+                      className="w-full border-2 border-black px-3 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-primary"
+                      value={form.endDate}
+                      min={form.date || today}
+                      onChange={(e) => setForm({ ...form, endDate: e.target.value })}
+                    />
+                  </div>
+
+                  <div>
                     <label className="block text-xs font-bold uppercase mb-1">Location *</label>
                     <input
                       className="w-full border-2 border-black px-3 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-primary"
@@ -451,6 +466,7 @@ export default function AdminDashboard() {
                           <div className="flex items-center gap-1.5">
                             <CalendarDays className="h-3.5 w-3.5 shrink-0" />
                             {formatDate(a.date)}
+                            {a.endDate && a.endDate !== a.date ? ` – ${formatDate(a.endDate)}` : ""}
                           </div>
                           <div className="flex items-center gap-1.5">
                             <MapPin className="h-3.5 w-3.5 shrink-0" />

@@ -7,8 +7,7 @@ import logoUrl from "@/assets/figureheadz-logo.jpeg";
 export function Header() {
   const { data: cart } = useCart();
   const itemCount = cart?.itemCount || 0;
-  const [location, setLocation] = useLocation();
-  const search = useSearch();
+  const [location] = useLocation();
 
   const navLinkClass = (active: boolean) =>
     `font-display text-2xl tracking-wide uppercase drop-shadow-[2px_2px_0_#000] transition-colors ${

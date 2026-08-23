@@ -1,4 +1,4 @@
-import { Link, useLocation, useSearch } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useCart } from "@/lib/cart";
 import { ShoppingCart, Search, User } from "lucide-react";
 import { Show } from "@clerk/react";
@@ -10,22 +10,10 @@ export function Header() {
   const [location, setLocation] = useLocation();
   const search = useSearch();
 
-  const categorySlug = new URLSearchParams(search).get("categorySlug") || undefined;
-  const onShop = location === "/shop";
-
-  const isShopAllActive = onShop && !categorySlug;
-  const isFunkoActive = onShop && categorySlug === "funko";
-  const isTradingCardsActive = onShop && categorySlug === "trading-cards";
-
   const navLinkClass = (active: boolean) =>
     `font-display text-2xl tracking-wide uppercase drop-shadow-[2px_2px_0_#000] transition-colors ${
       active ? "text-secondary" : "text-white hover:text-secondary"
     }`;
-
-  const goToCategory = (value: string | null) => {
-    // Toggling the same filter again clears it back to "Shop All"
-    setLocation(value ? `/shop?categorySlug=${encodeURIComponent(value)}` : "/shop");
-  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b-4 border-black bg-primary halftone-blue">
@@ -36,27 +24,10 @@ export function Header() {
           </Link>
           
           <nav className="hidden md:flex items-center gap-6">
-            <button type="button" onClick={() => goToCategory(null)} className={navLinkClass(isShopAllActive)}>
-              Shop All
-            </button>
-            <button
-              type="button"
-              onClick={() => goToCategory(isFunkoActive ? null : "funko")}
-              className={navLinkClass(isFunkoActive)}
-            >
-              Funko
-            </button>
-            <button
-              type="button"
-              onClick={() => goToCategory(isTradingCardsActive ? null : "trading-cards")}
-              className={navLinkClass(isTradingCardsActive)}
-            >
-              Trading Cards
-            </button>
-            <Link
-              href="/appearances"
-              className={navLinkClass(location === "/appearances")}
-            >
+            <Link href="/shop" className={navLinkClass(location === "/shop")}>
+              Store
+            </Link>
+            <Link href="/appearances" className={navLinkClass(location === "/appearances")}>
               Upcoming Appearances
             </Link>
           </nav>

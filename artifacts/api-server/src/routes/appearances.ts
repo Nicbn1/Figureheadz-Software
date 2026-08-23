@@ -2,7 +2,19 @@ import { Router, type IRouter } from "express";
 import { eq, gte, sql } from "drizzle-orm";
 import { db, appearancesTable } from "@workspace/db";
 import { requireAdmin } from "../lib/admin-auth";
-import { CreateAppearanceBody, UpdateAppearanceBody } from "@workspace/api-zod";
+import { z } from "zod/v4";
+
+const AppearanceBody = z.object({
+  name: z.string(),
+  date: z.string(),
+  endDate: z.string().nullable().optional(),
+  location: z.string(),
+  description: z.string().nullable().optional(),
+  link: z.string().nullable().optional(),
+});
+
+const CreateAppearanceBody = AppearanceBody;
+const UpdateAppearanceBody = AppearanceBody;
 
 const router: IRouter = Router();
 
@@ -52,7 +64,7 @@ router.post("/admin/appearances", requireAdmin, async (req, res): Promise<void> 
 
 // Admin: update appearance
 router.put("/admin/appearances/:id", requireAdmin, async (req, res): Promise<void> => {
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(String(req.params["id"]), 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid id" });
     return;
@@ -87,7 +99,7 @@ router.put("/admin/appearances/:id", requireAdmin, async (req, res): Promise<voi
 
 // Admin: delete appearance
 router.delete("/admin/appearances/:id", requireAdmin, async (req, res): Promise<void> => {
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(String(req.params["id"]), 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid id" });
     return;

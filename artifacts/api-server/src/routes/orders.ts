@@ -18,6 +18,8 @@ import {
 } from "@workspace/api-zod";
 import { loadCart } from "../lib/cart-helpers";
 import { calculateShippingCents, calculateTaxCents } from "../lib/pricing";
+import { sendOrderConfirmationEmail } from "../lib/email";
+import { logger } from "../lib/logger";
 
 const router: IRouter = Router();
 
@@ -136,7 +138,19 @@ router.post("/orders", async (req, res): Promise<void> => {
 
   await db.delete(cartItemsTable).where(eq(cartItemsTable.cartId, cart.id));
 
-  res.status(201).json(CreateOrderResponse.parse(await shapeOrder(order.id)));
+  const shaped = await shapeOrder(order.id);
+
+  // Fire-and-forget — don't let email failure block the 201 response
+  const orderItems = await db
+    .select()
+    .from(orderItemsTable)
+    .where(eq(orderItemsTable.orderId, order.id));
+
+  sendOrderConfirmationEmail({ order, items: orderItems }).catch((err) => {
+    logger.error({ err, orderId: order.id }, "Failed to send order confirmation email");
+  });
+
+  res.status(201).json(CreateOrderResponse.parse(shaped));
 });
 
 router.get("/orders", async (req, res): Promise<void> => {

@@ -19,6 +19,8 @@ export const ordersTable = pgTable("orders", {
   status: text("status").notNull().default("paid"),
   squareOrderId: text("square_order_id"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  statusUpdatedAt: timestamp("status_updated_at", { withTimezone: true }).notNull().defaultNow(),
+  reminderSentAt: timestamp("reminder_sent_at", { withTimezone: true }),
 });
 
 export const insertOrderSchema = createInsertSchema(ordersTable).omit({

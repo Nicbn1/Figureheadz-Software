@@ -19,13 +19,15 @@ const UpdateAppearanceBody = AppearanceBody;
 const router: IRouter = Router();
 
 // Public: list upcoming appearances (today and future, sorted by date)
-// For multi-day events, uses end_date so they stay visible through their last day
+// For multi-day events, uses end_date so they stay visible through their last day.
+// In development all appearances are shown regardless of date.
 router.get("/appearances", async (_req, res): Promise<void> => {
+  const isDev = process.env["NODE_ENV"] === "development";
   const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
   const rows = await db
     .select()
     .from(appearancesTable)
-    .where(gte(sql`COALESCE(${appearancesTable.endDate}, ${appearancesTable.date})`, today))
+    .where(isDev ? undefined : gte(sql`COALESCE(${appearancesTable.endDate}, ${appearancesTable.date})`, today))
     .orderBy(appearancesTable.date);
   res.json(rows);
 });

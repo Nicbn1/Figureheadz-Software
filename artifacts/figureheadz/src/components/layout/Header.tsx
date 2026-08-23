@@ -22,7 +22,7 @@ export function Header() {
             <img src={logoUrl} alt="Figureheadz" className="h-14 w-auto border-2 border-black" />
           </Link>
           
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="flex items-center gap-6">
             <Link href="/shop" className={navLinkClass(location === "/shop")}>
               Store
             </Link>
